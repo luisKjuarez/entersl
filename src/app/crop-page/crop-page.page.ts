@@ -8,7 +8,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { Base64 } from '@ionic-native/base64/ngx';
 import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/Camera/ngx';
 import { Router } from '@angular/router';
-
+//another change
 @Component({
   selector: 'app-crop-page',
   templateUrl: './crop-page.page.html',
@@ -86,7 +86,7 @@ export class CropPagePage implements OnInit {
         encodingType: this.camera.EncodingType.JPEG
       };
     await this.camera.getPicture(options).then((data) => {
-      this.presentToast("selected");
+      this.presentToast("selectedm");
       this.myImage = 'data:image/jpeg;base64,' + data;
 
     }, err => {
