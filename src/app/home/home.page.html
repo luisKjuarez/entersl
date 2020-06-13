@@ -1,0 +1,50 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="has-footer has-header">
+
+  <ion-refresher slot="fixed" (ionRefresh)="refreshPage($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" refreshingSpinner="circles" refreshingText="Cargando...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <ion-thumbnail class="logo-item">
+    <img src="/assets/images/enterlogoc.png" alt="Contains a logo picture" style="border-radius:9px;">
+  </ion-thumbnail>
+
+  <div class="picture-item">
+    <ion-thumbnail class="picture-src-item" (click)="selectImage()">
+       <img src="{{dataUser.foto}}" style="border-radius:5px;width:150px;height:210px" onError="src = '/assets/images/profilep.png'">
+  
+    </ion-thumbnail>
+    <ngx-qrcode [value]="createdCode" class="qr-item">
+    </ngx-qrcode>
+  </div>
+
+
+
+  <div class="info-item">
+    <p class="name-lbl">Nombre</p>
+    <h1 class="name-item">{{dataUser.nombre}}</h1>
+    <p class="name-lbl">Puesto</p>
+    <h1 class="name-item">CEO de enter</h1>
+    <p class="number-lbl">Número de SS</p>
+    <h2 class="number-item">{{dataUser.nsocio}}</h2>
+  </div>
+
+</ion-content>
+
+
+<ion-toolbar color="secondary" class="footer-icons">
+  <ion-item class="icon-item">
+    <a href="https://www.entersl.com.mx"> <img src="/assets/images/enterlogo.png" alt="company logo" class="img-icon">
+    </a>
+  </ion-item>
+  <ion-item *ngFor="let data of dataIcons" class="icon-item">
+    <a href="{{data.url}}"> <img src="{{data.logo}}" alt="company item" class="img-icon">
+
+    </a>
+  </ion-item>
+</ion-toolbar>

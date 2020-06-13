@@ -1,0 +1,33 @@
+<ion-app>
+
+  <ion-header [translucent]="true">
+    <ion-toolbar color="primary">
+      <img src="/assets/images/engine.png" alt="" class="engine-item" (click)="openFirst()">
+
+      <a href="/home"> <img src="/assets/images/home.png" alt="" class="home-item"></a>
+    </ion-toolbar>
+  </ion-header>
+  <ion-menu side="end" menuId="first" contentId="main">
+    <ion-header>
+      <ion-toolbar color="tertiary">
+        <ion-title>Configuración</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+
+      <ion-list>
+        <ion-item>
+          <ion-button [routerLink]="['/accounts']" color="tertiary">Cuenta</ion-button>
+        </ion-item>
+
+        <ion-item>Notificaciones<ion-toggle enabled (ionChange)="notifyChange($event)"></ion-toggle>
+        </ion-item>
+
+
+
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+
+  <ion-router-outlet id="main"></ion-router-outlet>
+</ion-app>

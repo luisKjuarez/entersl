@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>crop-page</ion-title>
+  </ion-toolbar>
+  <ion-buttons>
+    <ion-button fill="clear" color="danger" (click)="cancel()">
+      <ion-icon name="close" slot="icon-only"></ion-icon>
+    </ion-button>
+
+    <ion-button fill="clear" color="secondary" (click)="save()">
+      <ion-icon name="checkmark" slot="icon-only"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+</ion-header>
+
+<ion-content>
+
+
+  <image-cropper format="png" [maintainAspectRatio]="true" [aspectRatio]="2 / 3" (imageCropped)="cropped($event)" [imageBase64]="myImage" style="width:100%;height100%;background-color: #000000;"></image-cropper>
+
+
+
+</ion-content>

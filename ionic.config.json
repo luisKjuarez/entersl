@@ -1,0 +1,7 @@
+{
+  "name": "credencial",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}
