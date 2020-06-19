@@ -1,11 +1,8 @@
 import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { File } from '@ionic-native/File/ngx';
-import { FilePath } from '@ionic-native/file-path/ngx';
 import { ToastController, AlertController, ActionSheetController } from '@ionic/angular';
 import { ImageCroppedEvent, ImageCropperComponent } from 'ngx-image-cropper';
-import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { Observable } from 'rxjs/internal/Observable';
-import { Base64 } from '@ionic-native/base64/ngx';
 import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/Camera/ngx';
 import { Router } from '@angular/router';
 //another change
@@ -24,11 +21,8 @@ export class CropPagePage implements OnInit {
   scaleValX = 1;
   constructor(
     private file: File,
-    private webview: WebView,
     private router: Router,
 
-    private filePath: FilePath,
-    private bases4: Base64,
     private actionSheetController: ActionSheetController,
     private camera: Camera,
     private toastController: ToastController,
@@ -52,11 +46,6 @@ export class CropPagePage implements OnInit {
   ngOnInit() {
 
     this.selectImage();
-
-    /*  this.bases4.encodeFile(this.file.dataDirectory + "bcrop.jpg").then((base64F)=>{
-       this.myImage=base64F;
-       this.presentAlert(base64F);
-     });*/
     this.changeDetectorRef.detectChanges();
   }
 
@@ -86,17 +75,11 @@ export class CropPagePage implements OnInit {
         encodingType: this.camera.EncodingType.JPEG
       };
     await this.camera.getPicture(options).then((data) => {
-      this.presentToast("selectedm");
       this.myImage = 'data:image/jpeg;base64,' + data;
 
     }, err => {
       this.return2Home();
     });
-
-    /*  this.convertFile2Data("/assets/images/enterlogo.jpg").subscribe(base64=>{
-         this.myImage=base64;
-      });*/
-
   }
 
 
@@ -120,7 +103,10 @@ export class CropPagePage implements OnInit {
       },
       {
         text: 'Cancelar',
-        role: 'cancel'
+        role: 'cancel',
+        handler: () => {
+          this.return2Home();
+        }
       }
       ]
     });
@@ -177,7 +163,6 @@ export class CropPagePage implements OnInit {
     let blob = this.b64toBlob(realData, 'image/jpeg');
 
     this.file.writeFile(this.file.dataDirectory, 'profilept.jpg', blob, { replace: true }).then(response => {
-      this.presentToast("guqrdada");
       this.return2Home();
     }).catch(err => {
       this.presentAlert("error guardando");

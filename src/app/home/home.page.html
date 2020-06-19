@@ -1,9 +1,36 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar color="primary">
+    <img src="/assets/images/engine.png" alt="" class="engine-item" (click)="openFirst()">
+
+    <a href="/home"> <img src="/assets/images/home.png" alt="" class="home-item"></a>
   </ion-toolbar>
 </ion-header>
+<ion-menu side="end" menuId="first" contentId="main">
+  <ion-header>
+    <ion-toolbar color="tertiary">
+      <ion-title>Configuración</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
 
-<ion-content [fullscreen]="true" class="has-footer has-header">
+    <ion-list>
+      <ion-item>
+        <ion-button [routerLink]="['/accounts']" color="tertiary">Cuenta</ion-button>
+      </ion-item>
+
+      <ion-item>Notificaciones<ion-toggle enabled (ionChange)="notifyChange($event)"></ion-toggle>
+      </ion-item>
+
+
+      <ion-item>
+        <ion-button (click)="logout()" color="tertiary">Cerrar sesion</ion-button>
+      </ion-item>
+
+
+    </ion-list>
+  </ion-content>
+</ion-menu>
+<ion-content [fullscreen]="true" class="has-footer has-header" id="main">
 
   <ion-refresher slot="fixed" (ionRefresh)="refreshPage($event)">
     <ion-refresher-content pullingIcon="arrow-dropdown" refreshingSpinner="circles" refreshingText="Cargando...">
@@ -16,8 +43,8 @@
 
   <div class="picture-item">
     <ion-thumbnail class="picture-src-item" (click)="selectImage()">
-       <img src="{{dataUser.foto}}" style="border-radius:5px;width:150px;height:210px" onError="src = '/assets/images/profilep.png'">
-  
+       <img src="{{profilePictureTaken}}" style="border-radius:5px;width:150px;height:210px" onError="src = '/assets/images/profilep.png'">
+
     </ion-thumbnail>
     <ngx-qrcode [value]="createdCode" class="qr-item">
     </ngx-qrcode>
@@ -29,9 +56,9 @@
     <p class="name-lbl">Nombre</p>
     <h1 class="name-item">{{dataUser.nombre}}</h1>
     <p class="name-lbl">Puesto</p>
-    <h1 class="name-item">CEO de enter</h1>
+    <h1 class="name-item">{{dataUser.puesto}}</h1>
     <p class="number-lbl">Número de SS</p>
-    <h2 class="number-item">{{dataUser.nsocio}}</h2>
+    <h2 class="number-item">{{dataUser.nss}}</h2>
   </div>
 
 </ion-content>
@@ -39,7 +66,7 @@
 
 <ion-toolbar color="secondary" class="footer-icons">
   <ion-item class="icon-item">
-    <a href="https://www.entersl.com.mx"> <img src="/assets/images/enterlogo.png" alt="company logo" class="img-icon">
+     <a href="https://www.entersl.com.mx"> <img src="/assets/images/enterlogo.png" alt="company logo" class="img-icon">
     </a>
   </ion-item>
   <ion-item *ngFor="let data of dataIcons" class="icon-item">

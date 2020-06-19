@@ -16,6 +16,7 @@ import {Camera} from '@ionic-native/Camera/ngx';
 import {File} from '@ionic-native/File/ngx';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 import{Base64} from '@ionic-native/base64/ngx';
+import { HTTP } from '@ionic-native/http/ngx';
   @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -24,7 +25,7 @@ import{Base64} from '@ionic-native/base64/ngx';
   providers: [
     StatusBar,ScreenOrientation,OneSignal,
     Camera,File,FilePath,WebView,Base64
-    ,SplashScreen,
+    ,SplashScreen,HTTP,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy
        }
   ],

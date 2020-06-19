@@ -3,8 +3,7 @@ import { Component } from '@angular/core';
 import { Platform ,AlertController} from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { MenuController } from '@ionic/angular';
-import { OneSignal } from '@ionic-native/onesignal/ngx';
+ import { OneSignal } from '@ionic-native/onesignal/ngx';
 
 
 @Component({
@@ -14,14 +13,13 @@ import { OneSignal } from '@ionic-native/onesignal/ngx';
 })
 export class AppComponent {
   public notifyEnabled: boolean;
-  
+
   constructor(
-    private oneSignal: OneSignal,
+     private oneSignal: OneSignal,
     private alertCtrl: AlertController,
-    private platform: Platform,
+     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private menu: MenuController
 
   ) {
     this.initializeApp();
@@ -36,10 +34,6 @@ export class AppComponent {
 
   }
 
-  openFirst() {
-    this.menu.enable(true, 'first');
-    this.menu.open('first');
-  }
   initializeApp() {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();

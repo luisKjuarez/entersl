@@ -2,133 +2,104 @@ import { Component, ChangeDetectorRef } from '@angular/core';
 import { UserDataService } from './../user-data.service';
 import { IconsDataService } from './../icons-data.service';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
-import { MenuController, ToastController, Platform, ActionSheetController, AlertController, NavController } from '@ionic/angular';
-import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/Camera/ngx';
+import { MenuController, Platform, AlertController, NavController } from '@ionic/angular';
 import { File } from '@ionic-native/File/ngx';
-import { FilePath } from '@ionic-native/file-path/ngx';
 import { CacheService } from "ionic-cache";
-import { Router, NavigationExtras } from '@angular/router';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+import { AuthServiceService } from '../auth-service.service';
+import { StoreUserService } from '../store-user.service';
+
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
+
 export class HomePage {
   dataUser: any;
   dataIcons: any;
   createdCode: string;
   profilePictureTaken: string;
   portrait: boolean;
+  userSesion = null;
+
   constructor(
-    private camera: Camera,
     private file: File,
     private navctr: NavController,
-    private router: Router,
-    private filePath: FilePath,
     private cache: CacheService,
     private plt: Platform,
     private splashScreen: SplashScreen,
-    private toastController: ToastController,
     private webview: WebView,
     private alertController: AlertController,
     private changeDetectorRef: ChangeDetectorRef,
-     public apiUser: UserDataService, public apiIcons: IconsDataService, public screenO: ScreenOrientation,
+    private storeService: StoreUserService,
+    private auth: AuthServiceService,
+
+    public apiUser: UserDataService, public apiIcons: IconsDataService, public screenO: ScreenOrientation,
     private menu: MenuController
 
-  ) { }
+  ) {
 
+
+  }
+
+  ionViewWillEnter() {
+    this.userSesion = this.auth.getUser();
+  }
 
   ngOnInit() {
-    this.plt.ready().then((readySource) => {
-      console.log('Platform ready from', readySource);
-      this.splashScreen.hide();
-    });
-    this.initApis();
-     this.createdCode = "//J8*%&ndOPPPPis((388(nM;;8eibs,:ksi942jsnueNi83bn7)786%64";
+    this.dataUser = { "nombre": "", "nss": "", "caducidad": "", "puesto": "" };
 
-    setTimeout(() => {
+    this.plt.ready().then((readySource) => {
+      this.initApis();
 
       this.loadProfilePicture();
-    }, 500);
-   
-
-  }
-
-  async presentAlert(message: string) {
-    const alert = await this.alertController.create({
-      cssClass: 'my-custom-class',
-      header: 'Alert',
-      subHeader: 'Subtitle',
-      message: message,
-      buttons: ['OK']
+      this.dataUser = this.storeService.getUserData();
+      this.splashScreen.hide();
     });
-
-    await alert.present();
-  }
-
-
-  async presentToast(text: string) {
-    const toast = await this.toastController.create({
-      message: text,
-      position: 'bottom',
-      duration: 1500
-    });
-    toast.present();
-  }
-
-  async selectImage() {
-    this.toCrop();
-  }
+    this.createdCode = "//J8*%&ndOPPPPis((388(nM;;8eibs,:ksi942jsnueNi83bn7)786%64";
 
 
 
-  toCrop() {
-    this.navctr.navigateForward(['/crop-page']);
-  }
-
-  loadProfilePicture() {
-    this.cache.clearAll();
-    //  let correctPath = this.webview.convertFileSrc(this.file.dataDirectory + "profilept.jpg").substr(0, this.webview.convertFileSrc(this.file.dataDirectory + "profilept.jpg").lastIndexOf('/') + 1);
-    this.profilePictureTaken = this.webview.convertFileSrc(this.file.dataDirectory + "profilept.jpg?var=" + Math.random());
-    this.dataUser = { "nombre": "Manuel Sanchez Almazan", "nsocio": "NNND343-934S", "caducidad": "09/02/20", "foto": this.profilePictureTaken };
-    this.changeDetectorRef.detectChanges();
 
   }
 
 
-  closeFirst() {
-    this.menu.enable(false, 'first');
-    this.menu.close('first');
-  }
-
-  refreshPage(event) {
-    this.initApis();
-    setTimeout(() => {
-      event.target.complete();
-
-    }, 1500);
-  }
 
 
+
+  /********* DATA METHODS *********/
+  /////////////////////////////////
+
+  /**
+  *Initialize data that will be shown
+  **/
   private initApis() {
-    this.dataUser = { "nombre": "Manuel Sanchez Almazan", "nsocio": "NNND343-934S", "caducidad": "09/02/20", "foto": this.profilePictureTaken };
-    this.dataIcons = [{ "logo": "https://i.pinimg.com/originals/84/7c/08/847c083cc09040091439e3c05d1fedde.png", "url": "https://mail.google.com" }];
-    this.getUserData();
+    this.dataUser = { "nombre": "", "nss": "", "caducidad": "", "puesto": "" };
+    let dateNow = +new Date();
+    let dateExp = this.auth.getUser().exp + 0;
+    if ((dateNow + "").length == 10)
+      dateNow = dateNow * 1000;
+    if ((dateExp + "").length == 10)
+      dateExp = dateExp * 1000;
+    if (dateNow >= dateExp) {
+      this.presentAlert("Error", "Sesion expirada.", "Por favor vuelva a iniciar sesion.");
+      this.storeService.logout();
+      this.auth.logout();
+    }
+    this.getUserData(this.auth.getUser().namep, this.auth.getToken());
     this.getIconsData();
     this.unlockScreen();
     this.loadProfilePicture();
   }
 
 
-  private unlockScreen() {
-    this.screenO.unlock();
-  }
 
 
 
-  async getIconsData() {
+  getIconsData() {
     this.apiIcons.getIconsData().subscribe(res => {
       console.log(res);
       this.dataIcons = res;
@@ -139,15 +110,83 @@ export class HomePage {
   }
 
 
-  async getUserData() {
-    this.apiUser.getUserData().subscribe(res => {
-      console.log(res);
-      this.dataUser = res;
+  getUserData(name: string, token: string) {
+    this.apiUser.getUserData(name, token).then(res => {
+      if (res == null) {
+        this.storeService.getUserData().then(res => {
+          this.dataUser = JSON.parse(res);
+        }
+        );
+        return;
+      }
+      this.dataUser = JSON.parse(res.data);
+      this.storeService.storeUser(this.dataUser);
       console.log(this.dataUser);
     }, err => {
       console.log(err);
-
+      this.dataUser = this.storeService.getUserData();
     });
   }
+
+
+  /*********** VIEW METHODS **************/
+  ////////////////////////////////////////
+
+  openFirst() {
+    this.menu.enable(true, 'first');
+    this.menu.open('first');
+  }
+
+  closeFirst() {
+    this.menu.enable(false, 'first');
+    this.menu.close('first');
+  }
+
+  private unlockScreen() {
+    this.screenO.unlock();
+  }
+
+  refreshPage(event) {
+    this.initApis();
+    setTimeout(() => {
+      event.target.complete();
+
+    }, 1500);
+  }
+
+  loadProfilePicture() {
+    this.cache.clearAll();
+    //  let correctPath = this.webview.convertFileSrc(this.file.dataDirectory + "profilept.jpg").substr(0, this.webview.convertFileSrc(this.file.dataDirectory + "profilept.jpg").lastIndexOf('/') + 1);
+    this.profilePictureTaken = this.webview.convertFileSrc(this.file.dataDirectory + "profilept.jpg?var=" + Math.random());
+    //  this.dataUser = { "nombre": "Manuel Sanchez Almazan", "nsocio": "NNND343-934S", "caducidad": "09/02/20", "foto": this.profilePictureTaken };
+    this.changeDetectorRef.detectChanges();
+
+  }
+
+
+  async presentAlert(title: string, subtitle: string, message: string) {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: title,
+      subHeader: subtitle,
+      message: message,
+      buttons: ['OK']
+    });
+
+    await alert.present();
+  }
+
+  logout(){
+    this.storeService.logout();
+    this.auth.logout();
+  }
+
+
+
+  async selectImage() {
+    this.navctr.navigateForward(['/crop-page']);
+  }
+
+
 
 }
