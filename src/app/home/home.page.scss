@@ -11,8 +11,11 @@
   overflow-y: hidden;
 }
 
-
-
+ion-menu{
+      ion-content{
+          --ion-background-color:white;
+      }
+}
 .engine-item{
   width: 25px;
   height: auto;
@@ -27,34 +30,47 @@
   margin-left: 10px;
 }
 
-
-.logo-item {
-  position: fixed;
-  float: left;
-  padding: 10px;
+.logo-item{
+  top: 300px;
   width: 100px;
   height: auto;
+  padding-top: 75px;
+  margin: auto;
+}
+.logo-item-botommr {
+
+  position: absolute;
+ bottom: 90px;
+ right: 16px;
 }
 
 .item-picqr {
   float: right;
+  margin: auto;
 }
 @media all and (orientation: portrait) {
   .info-item {
     margin: auto;
+    color: white;
     padding: 10px;
     margin-top: 5%;
     text-align: center;
   }
 
   .name-lbl {
-    color: rgba(0,0,0,0.5);
+    color: rgba(255,255,255,0.5);
     padding: 0;
     margin: 0;
-    font-size: 80%;
+    font-size: 85%;
   }
-
+.nsocio-item{
+  padding: 0;
+  margin: 0;
+  font-size: 1.3em;
+  color: white;
+}
   .number-item {
+
     padding: 0;
     margin: 0;
   }
@@ -67,20 +83,30 @@
   }
 
   .name-item {
+    width: 80%;
+text-align: center;
+      font-size: 3em;
+    color:white;
+     border-top:2px solid rgb(156,119,40); border-bottom: 2px solid rgb(156,119,40);
     padding: 0;
-    margin: 0 0 20px;
+    margin:auto;
+
+    text-transform: capitalize;
   }
 
   .picture-item {
+    text-align: center;
+    align-items: center;
     margin: auto;
     width: 150px;
     height: auto;
-    padding: 10px;
-  }
+    top: 100px;
+   }
 }
 @media all and (orientation: landscape) {
   .info-item {
     margin: auto;
+    color: white;
      margin-top:6%;
      padding: 10px;
     text-align: center;
@@ -111,6 +137,9 @@
 
   .name-item {
     padding: 0;
+    color:white;
+     border-top:1px solid rgb(156,119,40); border-bottom: 1px solid rgb(156,119,40);
+
     text-align: center;
     margin: 0 0 20px;
   }
@@ -162,6 +191,10 @@ ion-item {
   height: auto;
 }
 
+ion-content{
+
+    --ion-background-color:rgb(21,32,63);
+}
 #container strong {
   font-size: 20px;
   line-height: 26px;

@@ -3,7 +3,7 @@
     <domain-config cleartextTrafficPermitted="false">
         <domain includeSubdomains="true">localhost</domain>
         <domain includeSubdomains="true">http://192.168.100.220:1300/auth/authenticate</domain>
-        <domain includeSubdomains="true">http://192.168.100.220:1300</domain>
+        <domain includeSubdomains="true">http://85.25.248.90:8080</domain>
         <domain includeSubdomains="true">http://192.168.100.220:1300/*</domain>
 
     </domain-config>

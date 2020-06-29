@@ -1,13 +1,14 @@
 
-import { Platform, ToastController, AlertController } from '@ionic/angular';
+import { Platform, AlertController } from '@ionic/angular';
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { BehaviorSubject, Observable, from, of, throwError } from 'rxjs';
-import { take, map, switchMap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, from } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { HTTP } from '@ionic-native/http/ngx';
 import { Router } from '@angular/router';
 
+const serverUrl = 'http://85.25.248.90:8080/cred-digital-1.0.0/';
 
 const helper = new JwtHelperService();
 const TOKEN_KEY = 'jwt-token';
@@ -17,7 +18,13 @@ const TOKEN_KEY = 'jwt-token';
 })
 export class AuthServiceService {
   public user: Observable<any>;
+  device_id: any;
+
   tokenStr: string;
+
+
+
+
   private userData = new BehaviorSubject(null);
   headers = {
     'Content-Type': 'application/json',
@@ -32,14 +39,15 @@ export class AuthServiceService {
     private http: HTTP,
     private plt: Platform,
     private alertCtrl: AlertController,
-    private toastController: ToastController,
     private router: Router) {
     this.user = null;
 
     this.loadStoredToken();
 
-
   }
+
+
+
 
   loadStoredToken() {
     let platformObs = from(this.plt.ready());
@@ -64,20 +72,12 @@ export class AuthServiceService {
   }
 
 
-  async presentToast(text: string) {
-    const toast = await this.toastController.create({
-      message: text,
-      position: 'bottom',
-      duration: 1500
-    });
-    toast.present();
-  }
 
-  async presentAlert(message: string) {
+  async presentAlert(message: string, header: string, subh: string) {
     const alert = await this.alertCtrl.create({
       cssClass: 'my-custom-class',
-      header: 'Alert',
-      subHeader: 'Subtitle',
+      header: header,
+      subHeader: subh,
       message: message,
       buttons: ['OK']
     });
@@ -88,15 +88,16 @@ export class AuthServiceService {
 
 
 
-  login(credentials: { user: string, pw: string }) {
+  login(credentials: { user: string, pw: string ,imei:string}) {
     let postData = {
       "username": credentials.user,
-      "password": credentials.pw
+      "password": credentials.pw,
+      "imei":credentials.imei
     }
 
     this.http.setDataSerializer("json");
 
-    return this.http.post('http://192.168.100.220:1300/auth/authenticate', postData, this.headers)
+    return this.http.post(serverUrl + 'auth/authenticate', postData, this.headers)
       .then(
         res => {
           this.tokenStr = JSON.parse(res.data).token;
@@ -105,30 +106,44 @@ export class AuthServiceService {
 
           this.userData.next(decoded);
           let storageObs = from(this.storage.set(TOKEN_KEY, JSON.parse(res.data).token));
+
+          this.router.navigateByUrl('/home');
           return storageObs;
-          //  return JSON.parse(res.data).token;
         },
         err => {
+          if (err.status == -1)
+            this.presentAlert("Verifique que tenga conexión a internet.", "Error", "No se pudo conectar al servidor.");
+          else
+            this.presentAlert(JSON.parse(err.error).message, "Error", "");
           return null;
         });
-    /*
-           return this.http.post('http://192.168.100.220:1300/authenticate',{username:credentials.user,password:credentials.pw}
-    ,{headers:new HttpHeaders({"Content-Type":"application/json" })}
-         ).pipe(
-          take(1),
-          map(res => {
-            this.presentToast(JSON.stringify(res));
-        return `eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwcnVlYmEiLCJ1c2VyLW5hbWUiOiJwcnVlYmEiLCJleHAiOjE1OTI4NTc0ODMsImlhdCI6MTU5MjI1MjY4M30.kNgMHjsR5WKpPHyzrFMdVLQz5I3aUTyX9-w3ZllRCzjoa6WDpWqkrEsY7xmXIKtfFXXp-RvET97hn2PdHmaztQ`;
-          }),
-          switchMap(token => {
-            let decoded = helper.decodeToken(token);
-            this.userData.next(decoded);
-            this.presentToast('rsrrf');
+  }
 
-            let storageObs = from(this.storage.set(TOKEN_KEY, token));
-            return storageObs;
-          })
-        );*/
+
+  register(credentials: { user: string, pw: string, curp: string ,imei:string}) {
+    let postData = {
+      "username": credentials.user,
+      "password": credentials.pw,
+      "curp": credentials.curp,
+      "imei":credentials.imei
+    }
+
+    this.http.setDataSerializer("json");
+
+    return this.http.post(serverUrl + 'auth/register', postData, this.headers)
+      .then(
+        res => {
+          this.presentAlert("Usuario registrado, ahora puede iniciar sesion.", "Registrado", "");
+          this.router.navigateByUrl('/login');
+          return res;
+        },
+        err => {
+          if (err.status == -1)
+            this.presentAlert("Verifique que tenga conexión a internet.", "Error", "No se pudo conectar al servidor.");
+          else
+            this.presentAlert(JSON.parse(err.error).message, "Error:: ", "");
+          return err;
+        });
   }
 
   getUser() {
@@ -145,6 +160,5 @@ export class AuthServiceService {
       this.userData.next(null);
     });
   }
-
 
 }

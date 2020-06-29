@@ -1,9 +1,46 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>register</ion-title>
+    <ion-title>Credencial digital</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <form [formGroup]="registrationForm" (ngSubmit)="registrationForm.valid && submitRegistration(registrationForm.value)" novalidate>
+       <ion-card-header>
+        <ion-card-title class="ion-text-center">Registrarse</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+
+        <ion-item lines="none">
+          <ion-label position="stacked">Usuario</ion-label>
+          <ion-input formControlName="user" type="email" placeholder="Usuario" name="email" [(ngModel)]="credentials.user"></ion-input>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-label position="stacked">CURP</ion-label>
+          <ion-input formControlName="curp" type="rmail" placeholder="CURP" name="curp" [(ngModel)]="credentials.curp">
+          </ion-input>
+        </ion-item>
+
+        <ion-item lines="none">
+          <ion-label position="stacked">Contraseña</ion-label>
+          <ion-input formControlName="password" type="password" placeholder="Contraseña" name="password" [(ngModel)]="credentials.pw">
+          </ion-input>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-label position="stacked">Contraseña</ion-label>
+          <ion-input formControlName="confirmPassword" type="password" placeholder="Confirmar contraseña" name="password" [(ngModel)]="credentials.pwc">
+          </ion-input>
+        </ion-item>
+
+        <div class='form-text error' *ngIf="registrationForm.controls.confirmPassword.touched">
+                 <div *ngIf="registrationForm.hasError('mismatchedPasswords')">Las contraseñas no coinciden.</div>
+               </div>
+        <ion-button [disabled]='!registrationForm.valid' (click)="register()" expand="block">Crear cuenta</ion-button>
+
+        <ion-button expand="block" color="secondary" routerLink="/login" routerDirection="forward">Iniciar sesion
+        </ion-button>
+  </ion-card-content>
+</form>
 
 </ion-content>

@@ -1,11 +1,12 @@
-<ion-header [translucent]="true">
+<ion-header [translucent]="false">
   <ion-toolbar color="primary">
     <img src="/assets/images/engine.png" alt="" class="engine-item" (click)="openFirst()">
 
     <a href="/home"> <img src="/assets/images/home.png" alt="" class="home-item"></a>
   </ion-toolbar>
 </ion-header>
-<ion-menu side="end" menuId="first" contentId="main">
+<ion-menu side="end" menuId="first" contentId="main" class="menu-side-item">
+
   <ion-header>
     <ion-toolbar color="tertiary">
       <ion-title>Configuración</ion-title>
@@ -13,18 +14,39 @@
   </ion-header>
   <ion-content>
 
-    <ion-list>
+    <ion-list >
+
+
+      <ion-item>Notificaciones<ion-toggle   (ionChange)="notifyChange($event)"></ion-toggle>
+      </ion-item>
+
+      <ion-item>Credenciales</ion-item>
+
+      <ion-radio-group  (ionChange)="changedCompany($event)">
+      <ion-item *ngFor="let data of dataUser.companies">
+        <img src="{{data.logo}}" alt="company item" style="margin-right:10px; height:35px;width:auto;">
+        {{data.name}}
+         <ion-radio value="{{data.name}}" checked="true" ></ion-radio>
+      </ion-item>
+
+      </ion-radio-group>
+      <ion-thumbnail class="logo-item"   style="float:left;">
+        <img src="/assets/images/canaco2.png" alt="Contains a logo picture" style="border-radius:9px;">
+      </ion-thumbnail>
+
+      <ion-thumbnail class="logo-item"  style="float:right;" >
+        <img src="/assets/images/canaco3.png" alt="Contains a logo picture" style="border-radius:9px;">
+      </ion-thumbnail>
+
+
+      <div class="vigencia">
+        <p>{{dataUser.caducidad}}</p>
+      </div>
       <ion-item>
-        <ion-button [routerLink]="['/accounts']" color="tertiary">Cuenta</ion-button>
+        <ion-button style="float:right;bottom:70px;right10px;" (click)="logout()" color="tertiary">Cerrar sesion</ion-button>
+
       </ion-item>
 
-      <ion-item>Notificaciones<ion-toggle enabled (ionChange)="notifyChange($event)"></ion-toggle>
-      </ion-item>
-
-
-      <ion-item>
-        <ion-button (click)="logout()" color="tertiary">Cerrar sesion</ion-button>
-      </ion-item>
 
 
     </ion-list>
@@ -37,36 +59,51 @@
     </ion-refresher-content>
   </ion-refresher>
 
-  <ion-thumbnail class="logo-item">
-    <img src="/assets/images/enterlogoc.png" alt="Contains a logo picture" style="border-radius:9px;">
+  <ion-thumbnail class="logo-item"   >
+    <img src="/assets/images/canaco1.png" alt="Contains a logo picture" style="border-radius:9px;">
   </ion-thumbnail>
 
   <div class="picture-item">
     <ion-thumbnail class="picture-src-item" (click)="selectImage()">
-       <img src="{{profilePictureTaken}}" style="border-radius:5px;width:150px;height:210px" onError="src = '/assets/images/profilep.png'">
+      <img src="{{profilePictureTaken}}" style="border-radius:5px;width:150px;height:210px" onError="src = '/assets/images/profilep.png'">
 
     </ion-thumbnail>
+    <ion-item style="margin:auto;">
     <ngx-qrcode [value]="createdCode" class="qr-item">
     </ngx-qrcode>
+
+  </ion-item>
   </div>
 
 
 
   <div class="info-item">
-    <p class="name-lbl">Nombre</p>
-    <h1 class="name-item">{{dataUser.nombre}}</h1>
-    <p class="name-lbl">Puesto</p>
-    <h1 class="name-item">{{dataUser.puesto}}</h1>
-    <p class="number-lbl">Número de SS</p>
-    <h2 class="number-item">{{dataUser.nss}}</h2>
-  </div>
+    <p *ngIf="dataUser.nombre" class="name-lbl">Nombre</p>
+    <h1 *ngIf="dataUser.nombre" class="name-item">{{dataUser.nombre}}</h1>
+  <!--  <p *ngIf="dataUser.puesto" class="name-lbl">Puesto</p>
+    <h1 *ngIf="dataUser.puesto" class="number-item">{{dataUser.puesto}}</h1>
+    <p *ngIf="dataUser.curp" class="number-lbl">CURP</p>
+    <h2 *ngIf="dataUser.curp" class="number-item">{{dataUser.curp}}</h2> -->
+    <div  style="position: absolute;
+  bottom: 68px;
+  left: 16px;
+ ">
 
+
+
+      <p *ngIf="dataUser.nsocio" style="font-size:1em;"><a style="font-size:1em;color:rgb(156,119,40);">No. </a>SOCIO</p>
+      <h2 *ngIf="dataUser.nsocio" class="nsocio-item">{{dataUser.nsocio}}</h2>
+    </div>
+  </div>
+  <ion-thumbnail class="logo-item-botommr" >
+    <img src="/assets/images/canaco2020.png" alt="Contains a logo picture" style="border-radius:9px;height:65px;width:auto;">
+  </ion-thumbnail>
 </ion-content>
 
 
 <ion-toolbar color="secondary" class="footer-icons">
   <ion-item class="icon-item">
-     <a href="https://www.entersl.com.mx"> <img src="/assets/images/enterlogo.png" alt="company logo" class="img-icon">
+    <a href="https://www.entersl.com.mx"> <img src="/assets/images/enterlogo.png" alt="company logo" class="img-icon">
     </a>
   </ion-item>
   <ion-item *ngFor="let data of dataIcons" class="icon-item">

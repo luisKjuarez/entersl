@@ -3,6 +3,9 @@ import { AuthServiceService } from './../auth-service.service';
 import { AlertController, ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/internal/Observable';
+import { Uid } from '@ionic-native/uid/ngx';
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+
 
 @Component({
   selector: 'app-login',
@@ -14,18 +17,39 @@ export class LoginPage implements OnInit {
     user: '',
     pw: ''
   };
+  device_id: any;
 
 
   constructor(
-    private auth: AuthServiceService,
+    private auth: AuthServiceService,public uid: Uid,
+      public androidPermissions: AndroidPermissions,
     private router: Router,
     private toastController: ToastController,
     private alertCtrl: AlertController
   ) { }
 
   ngOnInit() {
+
   }
 
+  async getIMEI() {
+    const { hasPermission } = await this.androidPermissions.checkPermission(
+      this.androidPermissions.PERMISSION.READ_PHONE_STATE
+    );
+    if (!hasPermission) {
+      const result = await this.androidPermissions.requestPermission(
+        this.androidPermissions.PERMISSION.READ_PHONE_STATE
+      ) ;
+      if (!result.hasPermission) {
+        throw new Error('Permissions required');
+      }
+
+      return 0;
+    }
+    this.device_id = this.uid.IMEI
+
+     return this.uid.IMEI;
+  }
 
   async presentToast(text: string) {
     const toast = await this.toastController.create({
@@ -48,9 +72,13 @@ export class LoginPage implements OnInit {
   }
 
 
-  login() {
-    this.auth.login(this.credentials).then(async res => {
-      if (res) {
+  async login() {
+   await this.getIMEI();
+ 
+    let credTemp={user:this.credentials.user,pw:this.credentials.pw,imei:this.device_id}
+    this.auth.login(credTemp).then(async res => {
+    /*  if (res) {
+
         this.router.navigateByUrl('/home');
       } else {
         const alert = await this.alertCtrl.create({
@@ -59,9 +87,9 @@ export class LoginPage implements OnInit {
           buttons: ['OK']
         });
         await alert.present();
-      }
+      }*/
     }, err => {
-      this.presentAlert(JSON.stringify(err));
+      //this.presentAlert(JSON.stringify(err));
     });
   }
 }

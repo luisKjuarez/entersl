@@ -25,14 +25,7 @@ export class AppComponent {
     this.initializeApp();
   }
 
-  notifyChange(event) {
-    setTimeout(() => {
-      this.notifyEnabled = event.detail.checked;
-      console.log(this.notifyEnabled);
-
-    }, 0);
-
-  }
+   
 
   initializeApp() {
     this.platform.ready().then(() => {

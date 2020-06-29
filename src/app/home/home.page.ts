@@ -20,11 +20,12 @@ import { StoreUserService } from '../store-user.service';
 export class HomePage {
   dataUser: any;
   dataIcons: any;
-  createdCode: string;
+  createdCode: string = "";
   profilePictureTaken: string;
   portrait: boolean;
   userSesion = null;
-
+  public notifyEnabled: boolean;
+  currentCompany:any;
   constructor(
     private file: File,
     private navctr: NavController,
@@ -51,7 +52,7 @@ export class HomePage {
 
   ngOnInit() {
     this.dataUser = { "nombre": "", "nss": "", "caducidad": "", "puesto": "" };
-
+this.currentCompany={"nombre":""};
     this.plt.ready().then((readySource) => {
       this.initApis();
 
@@ -59,7 +60,7 @@ export class HomePage {
       this.dataUser = this.storeService.getUserData();
       this.splashScreen.hide();
     });
-    this.createdCode = "//J8*%&ndOPPPPis((388(nM;;8eibs,:ksi942jsnueNi83bn7)786%64";
+    this.createdCode = "";
 
 
 
@@ -77,7 +78,7 @@ export class HomePage {
   *Initialize data that will be shown
   **/
   private initApis() {
-    this.dataUser = { "nombre": "", "nss": "", "caducidad": "", "puesto": "" };
+    this.dataUser = { "nombre": "", "nss": "", "caducidad": "", "puesto": "", "curp": "", "companies": {} };
     let dateNow = +new Date();
     let dateExp = this.auth.getUser().exp + 0;
     if ((dateNow + "").length == 10)
@@ -90,9 +91,13 @@ export class HomePage {
       this.auth.logout();
     }
     this.getUserData(this.auth.getUser().namep, this.auth.getToken());
+
     this.getIconsData();
+
     this.unlockScreen();
+
     this.loadProfilePicture();
+
   }
 
 
@@ -109,18 +114,26 @@ export class HomePage {
     });
   }
 
-
+  uploadImg() {
+    this.apiUser.uploadImage(this.auth.getUser().namep, this.auth.getToken(), this.file.dataDirectory + "profilept.jpg").then(res => {
+    }, err => {
+    })
+  }
   getUserData(name: string, token: string) {
     this.apiUser.getUserData(name, token).then(res => {
       if (res == null) {
         this.storeService.getUserData().then(res => {
           this.dataUser = JSON.parse(res);
+          this.createdCode = this.dataUser.nss;
+
         }
         );
         return;
       }
       this.dataUser = JSON.parse(res.data);
       this.storeService.storeUser(this.dataUser);
+      this.createdCode = this.dataUser.nss;
+
       console.log(this.dataUser);
     }, err => {
       console.log(err);
@@ -131,7 +144,25 @@ export class HomePage {
 
   /*********** VIEW METHODS **************/
   ////////////////////////////////////////
+  notifyChange(event) {
+    setTimeout(() => {
+      this.notifyEnabled = event.detail.checked;
+      console.log(this.notifyEnabled);
 
+    }, 0);
+
+  }
+
+changedCompany(event){
+  for(let data of this.dataUser.companies){
+    if(data.name===event.target.value){
+      this.currentCompany=data;
+      break;
+    }
+  }
+
+  this.presentAlert("","",JSON.stringify(this.currentCompany));
+ }
   openFirst() {
     this.menu.enable(true, 'first');
     this.menu.open('first');
@@ -151,16 +182,16 @@ export class HomePage {
     setTimeout(() => {
       event.target.complete();
 
-    }, 1500);
+    }, 1600);
   }
 
   loadProfilePicture() {
-    this.cache.clearAll();
-    //  let correctPath = this.webview.convertFileSrc(this.file.dataDirectory + "profilept.jpg").substr(0, this.webview.convertFileSrc(this.file.dataDirectory + "profilept.jpg").lastIndexOf('/') + 1);
-    this.profilePictureTaken = this.webview.convertFileSrc(this.file.dataDirectory + "profilept.jpg?var=" + Math.random());
-    //  this.dataUser = { "nombre": "Manuel Sanchez Almazan", "nsocio": "NNND343-934S", "caducidad": "09/02/20", "foto": this.profilePictureTaken };
-    this.changeDetectorRef.detectChanges();
 
+    this.cache.clearAll();
+
+    this.profilePictureTaken = this.webview.convertFileSrc(this.file.dataDirectory + "profilept.jpg?var=" + Math.random());
+
+    this.uploadImg();
   }
 
 
@@ -176,7 +207,7 @@ export class HomePage {
     await alert.present();
   }
 
-  logout(){
+  logout() {
     this.storeService.logout();
     this.auth.logout();
   }

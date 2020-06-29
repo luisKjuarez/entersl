@@ -1,12 +1,8 @@
 import { Injectable } from '@angular/core';
-import {Observable,of,throwError} from 'rxjs';
 import { HTTP } from '@ionic-native/http/ngx';
-import {catchError, tap , map} from 'rxjs/operators';
-import { AlertController } from '@ionic/angular';
 
 
-
-const url='http://192.168.100.220:1300/api/userinfo';
+const serverUrl='http://85.25.248.90:8080/cred-digital-1.0.0/';
 
 
 @Injectable({
@@ -16,45 +12,49 @@ const url='http://192.168.100.220:1300/api/userinfo';
 export class UserDataService {
 
 
-  constructor(    private http: HTTP,
-    private alertCtrl:AlertController) { }
+  constructor(private http: HTTP,
+    ) { }
 
 
 
-  async presentAlert(message: string) {
-    const alert = await this.alertCtrl.create({
-      cssClass: 'my-custom-class',
-      header: 'Error',
-      subHeader: 'sesion expirada',
-      message: message,
-      buttons: ['OK']
-    });
+uploadImage(user:string,token:string,image:string){
+ return  this.http.uploadFile(
+        serverUrl+'api/uploadimg',
+        { user: user },
+        { Authorization: token },
+        image,
+        'file'
+      )
+        .then(response => {
 
-    await alert.present();
-  }
-private getData(res: Response)
-{
+          console.log(response.status);
+          return response;
+        })
+        .catch(response => {
+          return response;
+          // prints 403
 
-  let body = res;
-  this.presentAlert(JSON.stringify(body));
-  return body;
-}
+        });
 
-  getUserData(name:string,token:string){
-let    headers = {
+      }
+  getUserData(name: string, token: string) {
+    let headers = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Headers": "Origin, Content-Type , Accept, Authorization, X-Request-With, Access-Control-Request-Method, Access-Control-Request-Headers",
       "Access-Control-Allow-Credentials": "true",
-      "Access-Control-Allow-Methods": "GET, POST"  ,
-    "Authorization":token   };
-     return this.http.get(url,{"user":name},headers).then(
-      res=>{
-          return res;
-      },err=>{
+      "Access-Control-Allow-Methods": "GET, POST",
+      "Authorization": token
+    };
 
-       return null;
+    return this.http.get(serverUrl+"api/userinfo", { "user": name }, headers).then(
+      res => {
+      
+        return res;
+      }, err => {
+
+        return null;
       });
 
   }
