@@ -10,7 +10,6 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { AuthServiceService } from '../auth-service.service';
 import { StoreUserService } from '../store-user.service';
 
-
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -37,7 +36,6 @@ export class HomePage {
     private changeDetectorRef: ChangeDetectorRef,
     private storeService: StoreUserService,
     private auth: AuthServiceService,
-
     public apiUser: UserDataService, public apiIcons: IconsDataService, public screenO: ScreenOrientation,
     private menu: MenuController
 
@@ -55,8 +53,7 @@ export class HomePage {
 this.currentCompany={"nombre":""};
     this.plt.ready().then((readySource) => {
       this.initApis();
-
-      this.loadProfilePicture();
+       this.loadProfilePicture();
       this.dataUser = this.storeService.getUserData();
       this.splashScreen.hide();
     });
@@ -145,6 +142,7 @@ this.currentCompany={"nombre":""};
   /*********** VIEW METHODS **************/
   ////////////////////////////////////////
   notifyChange(event) {
+    document.documentElement.style.setProperty
     setTimeout(() => {
       this.notifyEnabled = event.detail.checked;
       console.log(this.notifyEnabled);

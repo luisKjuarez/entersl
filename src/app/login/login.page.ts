@@ -3,9 +3,8 @@ import { AuthServiceService } from './../auth-service.service';
 import { AlertController, ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/internal/Observable';
-import { Uid } from '@ionic-native/uid/ngx';
-import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
-
+ 
+import { Device } from '@ionic-native/device/ngx';
 
 @Component({
   selector: 'app-login',
@@ -21,9 +20,9 @@ export class LoginPage implements OnInit {
 
 
   constructor(
-    private auth: AuthServiceService,public uid: Uid,
-      public androidPermissions: AndroidPermissions,
-    private router: Router,
+    private device:Device,
+    private auth: AuthServiceService,
+     private router: Router,
     private toastController: ToastController,
     private alertCtrl: AlertController
   ) { }
@@ -32,7 +31,8 @@ export class LoginPage implements OnInit {
 
   }
 
-  async getIMEI() {
+    getIMEI() {
+    this.device_id=this.device.uuid;/*
     const { hasPermission } = await this.androidPermissions.checkPermission(
       this.androidPermissions.PERMISSION.READ_PHONE_STATE
     );
@@ -48,7 +48,7 @@ export class LoginPage implements OnInit {
     }
     this.device_id = this.uid.IMEI
 
-     return this.uid.IMEI;
+     return this.uid.IMEI;*/
   }
 
   async presentToast(text: string) {
@@ -73,8 +73,8 @@ export class LoginPage implements OnInit {
 
 
   async login() {
-   await this.getIMEI();
- 
+     this.getIMEI();
+
     let credTemp={user:this.credentials.user,pw:this.credentials.pw,imei:this.device_id}
     this.auth.login(credTemp).then(async res => {
     /*  if (res) {

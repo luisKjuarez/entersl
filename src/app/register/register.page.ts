@@ -3,8 +3,7 @@ import { AuthServiceService } from '../auth-service.service';
 import { Router } from '@angular/router';
 import { AlertController, ToastController } from '@ionic/angular';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import { Uid } from '@ionic-native/uid/ngx';
-import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+ import { Device } from '@ionic-native/device/ngx';
 
 @Component({
   selector: 'app-register',
@@ -20,9 +19,9 @@ export class RegisterPage implements OnInit {
     pw: '',
     curp: ''
   };
-  constructor(private auth: AuthServiceService, public uid: Uid,
-    public androidPermissions: AndroidPermissions,
-  private  fb:FormBuilder,
+  constructor(private auth: AuthServiceService,
+  private  device:Device,
+   private  fb:FormBuilder,
      private router: Router,
     private toastController: ToastController,
     private alertCtrl: AlertController) {
@@ -33,7 +32,9 @@ export class RegisterPage implements OnInit {
   ngOnInit() {
   }
 
-  async getIMEI() {
+    getIMEI() {
+this.device_id=this.device.uuid;
+      /*
     const { hasPermission } = await this.androidPermissions.checkPermission(
       this.androidPermissions.PERMISSION.READ_PHONE_STATE
     );
@@ -48,7 +49,7 @@ export class RegisterPage implements OnInit {
       return 0;
     }
     this.device_id = this.uid.IMEI
-     return this.uid.IMEI;
+     return this.uid.IMEI;*/
   }
 
     matchingPasswords(passwordKey: string, confirmPasswordKey: string) {

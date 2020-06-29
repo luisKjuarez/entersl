@@ -17,17 +17,15 @@ import {File} from '@ionic-native/File/ngx';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 import{Base64} from '@ionic-native/base64/ngx';
 import { HTTP } from '@ionic-native/http/ngx';
-
-import { Uid } from '@ionic-native/uid/ngx';
-import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
-  @NgModule({
+import { Device } from '@ionic-native/device/ngx';
+    @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,IonicStorageModule.forRoot(),CacheModule.forRoot(),
      HttpClientModule],
   providers: [
-    StatusBar,ScreenOrientation,OneSignal, Uid,
-    AndroidPermissions,
+    Device,
+    StatusBar,ScreenOrientation,OneSignal,  
     Camera,File,FilePath,WebView,Base64
     ,SplashScreen,HTTP,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy
