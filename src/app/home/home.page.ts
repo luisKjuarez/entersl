@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
 import { UserDataService } from './../user-data.service';
 import { IconsDataService } from './../icons-data.service';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
@@ -16,7 +16,7 @@ import { StoreUserService } from '../store-user.service';
   styleUrls: ['home.page.scss'],
 })
 
-export class HomePage {
+export class HomePage implements OnInit{
   dataUser: any;
   dataIcons: any;
   createdCode: string = "";
@@ -47,6 +47,12 @@ export class HomePage {
   ionViewWillEnter() {
     this.userSesion = this.auth.getUser();
     this.loadProfilePicture();
+  }
+  ionViewDidEnter()
+  {
+    this.userSesion = this.auth.getUser();
+    this.loadProfilePicture();
+
   }
 
   ngOnInit() {
