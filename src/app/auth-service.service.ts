@@ -111,7 +111,7 @@ export class AuthServiceService {
           return storageObs;
         },
         err => {
-          if (err.status == -1)
+           if (err.status == -1)
             this.presentAlert("Verifique que tenga conexión a internet.", "Error", "No se pudo conectar al servidor.");
           else
             this.presentAlert(JSON.parse(err.error).message, "Error", "");

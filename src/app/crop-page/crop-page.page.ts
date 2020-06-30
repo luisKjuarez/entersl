@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
+ import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { File } from '@ionic-native/File/ngx';
 import { ToastController, AlertController, ActionSheetController } from '@ionic/angular';
 import { ImageCroppedEvent, ImageCropperComponent } from 'ngx-image-cropper';
@@ -150,8 +150,7 @@ export class CropPagePage implements OnInit {
 
     this.router.navigate(['/home'])
       .then(() => {
-        window.location.reload();
-      });
+       });
   }
   cancel() {
     this.return2Home();

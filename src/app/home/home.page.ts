@@ -24,7 +24,7 @@ export class HomePage {
   portrait: boolean;
   userSesion = null;
   public notifyEnabled: boolean;
-  currentCompany:any;
+  currentCompany: any;
   constructor(
     private file: File,
     private navctr: NavController,
@@ -46,14 +46,15 @@ export class HomePage {
 
   ionViewWillEnter() {
     this.userSesion = this.auth.getUser();
+    this.loadProfilePicture();
   }
 
   ngOnInit() {
     this.dataUser = { "nombre": "", "nss": "", "caducidad": "", "puesto": "" };
-this.currentCompany={"nombre":""};
+    this.currentCompany = { "nombre": "" };
     this.plt.ready().then((readySource) => {
       this.initApis();
-       this.loadProfilePicture();
+      this.loadProfilePicture();
       this.dataUser = this.storeService.getUserData();
       this.splashScreen.hide();
     });
@@ -87,6 +88,8 @@ this.currentCompany={"nombre":""};
       this.storeService.logout();
       this.auth.logout();
     }
+
+
     this.getUserData(this.auth.getUser().namep, this.auth.getToken());
 
     this.getIconsData();
@@ -116,13 +119,20 @@ this.currentCompany={"nombre":""};
     }, err => {
     })
   }
+
   getUserData(name: string, token: string) {
     this.apiUser.getUserData(name, token).then(res => {
       if (res == null) {
         this.storeService.getUserData().then(res => {
           this.dataUser = JSON.parse(res);
           this.createdCode = this.dataUser.nss;
-
+          var dateExpire = new Date(this.dataUser.caducidad)
+          var currDate = new Date();
+          this.presentAlert("", "", this.dataUser.caducidad);
+          if (dateExpire <= currDate) {
+            this.storeService.logout();
+            this.auth.logout();
+          }
         }
         );
         return;
@@ -130,12 +140,25 @@ this.currentCompany={"nombre":""};
       this.dataUser = JSON.parse(res.data);
       this.storeService.storeUser(this.dataUser);
       this.createdCode = this.dataUser.nss;
-
+      var dateExpire = new Date(this.dataUser.caducidad)
+      var currDate = new Date();
+      this.presentAlert("", "", this.dataUser.caducidad);
+      if (dateExpire <= currDate) {
+        this.storeService.logout();
+        this.auth.logout();
+      }
       console.log(this.dataUser);
     }, err => {
-      console.log(err);
       this.dataUser = this.storeService.getUserData();
+      var dateExpire = new Date(this.dataUser.caducidad)
+      var currDate = new Date();
+      this.presentAlert("", "", this.dataUser.caducidad);
+      if (dateExpire <= currDate) {
+        this.storeService.logout();
+        this.auth.logout();
+      }
     });
+
   }
 
 
@@ -151,16 +174,16 @@ this.currentCompany={"nombre":""};
 
   }
 
-changedCompany(event){
-  for(let data of this.dataUser.companies){
-    if(data.name===event.target.value){
-      this.currentCompany=data;
-      break;
+  changedCompany(event) {
+    for (let data of this.dataUser.companies) {
+      if (data.name === event.target.value) {
+        this.currentCompany = data;
+        break;
+      }
     }
-  }
 
-  this.presentAlert("","",JSON.stringify(this.currentCompany));
- }
+    this.presentAlert("", "", JSON.stringify(this.currentCompany));
+  }
   openFirst() {
     this.menu.enable(true, 'first');
     this.menu.open('first');
