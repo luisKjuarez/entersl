@@ -22,28 +22,28 @@ ion-menu{
   margin-right: 10px;
 }
 
-.logo-item{
-  border: solid white 2px;
-
- grid-column:1;
- grid-row:4;
-}
-.logo-item-botommr {
-  border: solid white 2px;
-
-grid-column:5;
-grid-row:4;
-}
 
 .item-picqr {
  }
 @media all and (orientation: portrait) {
+
+  .logo-item{
+
+   grid-column:1;
+   grid-row:4;
+  }
+  .logo-item-botommr {
+
+  grid-column:4;
+  grid-row:4;
+  }
+
+
   .info-item {
      color: white;
      grid-row: 3;
-     grid-column: 3;
-     border:solid white 1px;
-    text-align: center;
+     grid-column: 2 / span 2;
+     text-align: center;
   }
 
   .name-lbl {
@@ -78,27 +78,35 @@ grid-row:4;
   }
 
   .picture-item {
-grid-row: var(--row-pic);
-grid-column: var(--col-pic);
+grid-row: 1;
+grid-column: 2 / span 2;
   align-items: center;
 height: 100%;
 width: auto;
-border: solid white 2px;
-   }
+    }
 }
 @media all and (orientation: landscape) {
+  .logo-item{
+
+   grid-column:1;
+   grid-row:1;
+  }
+  .logo-item-botommr {
+
+  grid-column:4;
+  grid-row:1;
+  }
+
   .info-item {
      color: white;
      grid-row: 2;
-     grid-column: 1;
-     border :solid white 2px;
-    text-align: center;
+     grid-column: 2 / span 2;
+     text-align: center;
    }
 
   .name-lbl {
     text-align: center;
     color: rgba(0,0,0,0.5);
-    border: solid white 2px;
 
   }
 
@@ -117,14 +125,13 @@ border: solid white 2px;
 
   .name-item {
      color:white;
-     border: solid white 2px;
 
 
   }
 
   .picture-item {
-    grid-row: 1;
-    grid-column: 3;
+    grid-row: 2;
+    grid-column: 1 span / 1 ;
     border:solid white 2px;
    }
 }
