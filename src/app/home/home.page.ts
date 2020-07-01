@@ -114,7 +114,7 @@ changeVar(){
     this.col++;
     if(this.col>=5)
     this.col=1;
-      this.elementRef.nativeElement.style.setProperty('--col-pic', this.col+"");
+      this.elementRef.nativeElement.style.setProperty('--col-pic', this.col+" / span 2");
 
 }
   getIconsData() {
