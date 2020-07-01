@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
+import { Component, ChangeDetectorRef, ElementRef ,OnInit } from '@angular/core';
 import { UserDataService } from './../user-data.service';
 import { IconsDataService } from './../icons-data.service';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
@@ -26,6 +26,7 @@ export class HomePage implements OnInit{
   public notifyEnabled: boolean;
   currentCompany: any;
   constructor(
+  private elementRef:ElementRef,
     private file: File,
     private navctr: NavController,
     private cache: CacheService,
@@ -107,9 +108,15 @@ export class HomePage implements OnInit{
   }
 
 
+ col = 1;
 
+changeVar(){
+    this.col++;
+    if(this.col>=5)
+    this.col=1;
+      this.elementRef.nativeElement.style.setProperty('--col-pic', this.col+"");
 
-
+}
   getIconsData() {
     this.apiIcons.getIconsData().subscribe(res => {
       console.log(res);
@@ -134,8 +141,7 @@ export class HomePage implements OnInit{
           this.createdCode = this.dataUser.nss;
           var dateExpire = new Date(this.dataUser.caducidad)
           var currDate = new Date();
-          this.presentAlert("", "", this.dataUser.caducidad);
-          if (dateExpire <= currDate) {
+           if (dateExpire <= currDate) {
             this.storeService.logout();
             this.auth.logout();
           }
@@ -148,8 +154,7 @@ export class HomePage implements OnInit{
       this.createdCode = this.dataUser.nss;
       var dateExpire = new Date(this.dataUser.caducidad)
       var currDate = new Date();
-      this.presentAlert("", "", this.dataUser.caducidad);
-      if (dateExpire <= currDate) {
+       if (dateExpire <= currDate) {
         this.storeService.logout();
         this.auth.logout();
       }
@@ -158,8 +163,7 @@ export class HomePage implements OnInit{
       this.dataUser = this.storeService.getUserData();
       var dateExpire = new Date(this.dataUser.caducidad)
       var currDate = new Date();
-      this.presentAlert("", "", this.dataUser.caducidad);
-      if (dateExpire <= currDate) {
+       if (dateExpire <= currDate) {
         this.storeService.logout();
         this.auth.logout();
       }

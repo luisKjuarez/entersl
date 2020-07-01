@@ -6,7 +6,6 @@
   top: 50%;
   transform: translateY(-50%);
 }
-
 .scroll-content {
   overflow-y: hidden;
 }
@@ -23,49 +22,37 @@ ion-menu{
   margin-right: 10px;
 }
 
-.home-item{
-  width: 25px;
-  height: auto;
-  float: left;
-  margin-left: 10px;
-}
-
 .logo-item{
-  top: 300px;
-  width: 100px;
-  height: auto;
-  padding-top: 75px;
-  margin: auto;
+  border: solid white 2px;
+
+ grid-column:1;
+ grid-row:4;
 }
 .logo-item-botommr {
+  border: solid white 2px;
 
-  position: absolute;
- bottom: 90px;
- right: 16px;
+grid-column:5;
+grid-row:4;
 }
 
 .item-picqr {
-  float: right;
-  margin: auto;
-}
+ }
 @media all and (orientation: portrait) {
   .info-item {
-    margin: auto;
-    color: white;
-    padding: 10px;
-    margin-top: 5%;
+     color: white;
+     grid-row: 3;
+     grid-column: 3;
+     border:solid white 1px;
     text-align: center;
   }
 
   .name-lbl {
     color: rgba(255,255,255,0.5);
-    padding: 0;
-    margin: 0;
+
     font-size: 85%;
   }
 .nsocio-item{
-  padding: 0;
-  margin: 0;
+
   font-size: 1.3em;
   color: white;
 }
@@ -77,48 +64,42 @@ ion-menu{
 
   .number-lbl {
     color: rgba(0,0,0,0.5);
-    padding: 0;
-    margin: 0;
+
     font-size: 80%;
   }
 
   .name-item {
-    width: 80%;
-text-align: center;
-      font-size: 3em;
-    color:white;
-     border-top:2px solid rgb(156,119,40); border-bottom: 2px solid rgb(156,119,40);
-    padding: 0;
-    margin:auto;
+
+
+ text-align: center;
+     color:white;
 
     text-transform: capitalize;
   }
 
   .picture-item {
-    text-align: center;
-    align-items: center;
-    margin: auto;
-    width: 150px;
-    height: auto;
-    top: 100px;
+grid-row: var(--row-pic);
+grid-column: var(--col-pic);
+  align-items: center;
+height: 100%;
+width: auto;
+border: solid white 2px;
    }
 }
 @media all and (orientation: landscape) {
   .info-item {
-    margin: auto;
-    color: white;
-     margin-top:6%;
-     padding: 10px;
+     color: white;
+     grid-row: 2;
+     grid-column: 1;
+     border :solid white 2px;
     text-align: center;
-    width:50%;
-  }
+   }
 
   .name-lbl {
     text-align: center;
     color: rgba(0,0,0,0.5);
-    padding: 0;
-    margin: 0;
-    font-size: 80%;
+    border: solid white 2px;
+
   }
 
   .number-item {
@@ -130,28 +111,21 @@ text-align: center;
   .number-lbl {
     text-align: center;
     color: rgba(0,0,0,0.5);
-    padding: 0;
-    margin: 0;
+
     font-size: 80%;
   }
 
   .name-item {
-    padding: 0;
-    color:white;
-     border-top:1px solid rgb(156,119,40); border-bottom: 1px solid rgb(156,119,40);
+     color:white;
+     border: solid white 2px;
 
-    text-align: center;
-    margin: 0 0 20px;
+
   }
 
   .picture-item {
-    margin: auto;
-
-    margin-right: 5%;
-    width: 150px;
-    height: auto;
-    padding: 10px;
-    float: right;
+    grid-row: 1;
+    grid-column: 3;
+    border:solid white 2px;
    }
 }
 //// END LANDSCAPE ///////
@@ -160,35 +134,25 @@ text-align: center;
 .icon-item {
   height: auto;
   width: 60px;
-  float: left;
-}
+ }
 
 ion-item {
   --ion-background-color: transparent;
 }
 
 .footer-icons {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  position: fixed;
-  bottom: 1px;
+
 }
 
 .picture-src-item{
-  width: 150px;
-  height: auto;
-  margin:auto;
+
 }
 .qr-item {
-  margin: auto;
-  left: 5px;
+
 }
 
 .img-icon {
-  width: 100%;
-  height: auto;
+
 }
 
 ion-content{
