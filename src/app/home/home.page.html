@@ -45,7 +45,12 @@
         <ion-button style="float:right;bottom:70px;right10px;" (click)="logout()" color="tertiary">Cerrar sesion</ion-button>
 
       </ion-item>
-     
+
+      <ion-item>
+        <ion-button style="float:right;bottom:70px;right10px;" (click)="changeVar()" color="tertiary">Cerrar sesion</ion-button>
+
+      </ion-item>
+
 
 
     </ion-list>
@@ -60,7 +65,8 @@
 
 
 
-<div style=" height:100%;width:100%; display: grid;grid-auto-rows: 1fr;    grid-auto-columns:1fr; border:solid white 1px; grid-gap: 1px;">
+<div style=" height:100%;width:100%; display: grid;   grid-template-columns: repeat(6, 1fr);
+      grid-template-rows: repeat(6 1fr);  grid-auto-rows: 1fr;    grid-auto-columns:1fr; border:solid white 1px; grid-gap: 1px;">
 
   <ion-thumbnail class="logo-item"   >
     <img src="/assets/images/canaco1.png" alt="Contains a logo picture" style="border-radius:9px;">
@@ -98,7 +104,7 @@
       <h2 *ngIf="dataUser.nsocio" class="nsocio-item">{{dataUser.nsocio}}</h2>
 
   </div>
-  <ion-thumbnail class="logo-item-botommr" >
+  <ion-thumbnail style="{{styleTest}}" >
     <img src="/assets/images/canaco2020.png" alt="Contains a logo picture" style="border-radius:9px;height:65px;width:auto;">
   </ion-thumbnail>
 

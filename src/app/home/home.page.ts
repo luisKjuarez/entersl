@@ -17,6 +17,7 @@ import { StoreUserService } from '../store-user.service';
 })
 
 export class HomePage implements OnInit{
+  styleTest = " grid-column:4; grid-row:4; border:solid white 3px;";
   dataUser: any;
   dataIcons: any;
   createdCode: string = "";
@@ -111,10 +112,12 @@ export class HomePage implements OnInit{
  col = 1;
 
 changeVar(){
+  this.styleTest = " grid-column:"+this.col+"; grid-row:4; border:solid white 3px;";
+
     this.col++;
     if(this.col>=5)
     this.col=1;
-      this.elementRef.nativeElement.style.setProperty('--col-pic', this.col+" / span 2");
+  //    this.elementRef.nativeElement.style.setProperty('--col-pic', this.col+" / span 2");
  }
   getIconsData() {
     this.apiIcons.getIconsData().subscribe(res => {
