@@ -7,9 +7,9 @@ import {catchError, tap , map} from 'rxjs/operators';
 //const serverUrl = 'http://85.25.248.90:8080/cred-digital-1.0.0/';
 
  //const serverUrl='http://192.168.2.65:1300/';
+ const serverUrl = 'http://85.25.248.90:8080/cred-digital-debug-1.0.0/';
 
-
- const serverUrl='http://192.168.2.65:1300/';
+ //const serverUrl='http://192.168.2.65:1300/';
 const httpOptions={
   headers: new HttpHeaders({'Content-Type':'application/json'})
 };
