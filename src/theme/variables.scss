@@ -3,8 +3,70 @@
 
 /** Ionic CSS Variables **/
 :root {
-  --row-pic:1;
-  --col-pic:3;
+  //6X6
+  /** PORTRAIT VARIABLES **/
+
+  /**PHOTO**/
+  --row-pic-port: 2 / span 2;
+  --col-pic-port: 4 / span 2 ;
+/**LOGO EMPRESA**/
+  --row-logoe-port:2;
+  --col-logoe-port:2;
+/**LOGO2**/
+  --row-logo2-port:2;
+  --col-logo2-port:7;
+/**LOGO3**/
+  --col-logo3-port:2;
+  --row-logo3-port:7;
+
+//** QR  **/
+  --col-qr-port:4 / span 2;
+  --row-qr-port:6;
+
+/** DETAILS  **/
+  --col-det-port:3 / span  4;
+  --row-det-port:4;
+  --color-det-port:white;
+  --justify-det-port:center;
+  --font-size-det-port:1em;
+  --font-family-det-port:Arial;
+
+  --color-title-port:rgba(255,255,255,0.5);
+  --justify-title-port:center;
+  --font-size-title-port:.7em;
+  --font-family-title-port:Arial;
+
+  /** LANDSCAPE VARIABLES **/
+  /**PHOTO**/
+  --row-pic-land:1;
+  --col-pic-land:3 span / 2;
+/**LOGO EMPRESA**/
+  --row-logoe-land:1;
+  --col-logoe-land:1;
+/**LOGO2**/
+  --row-logo2-land:1;
+  --col-logo2-land:6;
+/**LOGO3**/
+  --col-logo3-land:1;
+  --row-logo3-land:6;
+
+//** QR  **/
+  --col-qr-land:3;
+  --row-qr-land:5;
+
+/** DETAILS  **/
+  --col-det-land:2 span / 4;
+  --row-det-land:3;
+  --color-det-land:white;
+  --justify-det-land:center;
+  --font-size-det-land:1em;
+  --font-family-det-land:Arial;
+  --color-title-land:rgba(255,255,255,0.5);
+  --justify-title-land:center;
+  --font-size--title-land:.7em;
+  --font-family-title-land:Arial;
+
+
   /** primary **/
   --ion-color-primary:#ED7E1D;
   --ion-color-primary-rgb: 56, 128, 255;
@@ -85,7 +147,7 @@
    */
 
   body {
-   
+
     --ion-color-primary: #ED7E1D;
     --ion-color-primary-rgb: 66,140,255;
     --ion-color-primary-contrast: #ffffff;

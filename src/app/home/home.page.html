@@ -2,8 +2,10 @@
   <ion-toolbar color="primary">
     <img src="/assets/images/engine.png" alt="" class="engine-item" (click)="openFirst()">
 
-   </ion-toolbar>
+  </ion-toolbar>
 </ion-header>
+
+
 <ion-menu side="end" menuId="first" contentId="main" class="menu-side-item">
 
   <ion-header>
@@ -13,27 +15,27 @@
   </ion-header>
   <ion-content>
 
-    <ion-list >
+    <ion-list>
 
 
-      <ion-item>Notificaciones<ion-toggle   (ionChange)="notifyChange($event)"></ion-toggle>
+      <ion-item>Notificaciones<ion-toggle (ionChange)="notifyChange($event)"></ion-toggle>
       </ion-item>
 
       <ion-item>Credenciales</ion-item>
 
-      <ion-radio-group  (ionChange)="changedCompany($event)">
-      <ion-item *ngFor="let data of dataUser.companies">
-        <img src="{{data.logo}}" alt="company item" style="margin-right:10px; height:35px;width:auto;">
-        {{data.name}}
-         <ion-radio value="{{data.name}}" checked="true" ></ion-radio>
-      </ion-item>
+      <ion-radio-group (ionChange)="changedCompany($event)">
+        <ion-item *ngFor="let data of dataUser.companies">
+          <img src="{{data.logo}}" alt="company item" style="margin-right:10px; height:35px;width:auto;">
+          {{data.companyName}}
+          <ion-radio value="{{data.companyName}}" checked="true"></ion-radio>
+        </ion-item>
 
       </ion-radio-group>
-      <ion-thumbnail class="logo-item"   style="float:left;">
+      <ion-thumbnail class="logo-item" style="float:left;">
         <img src="/assets/images/canaco2.png" alt="Contains a logo picture" style="border-radius:9px;">
       </ion-thumbnail>
 
-      <ion-thumbnail class="logo-item"  style="float:right;" >
+      <ion-thumbnail class="logo-item" style="float:right;">
         <img src="/assets/images/canaco3.png" alt="Contains a logo picture" style="border-radius:9px;">
       </ion-thumbnail>
 
@@ -56,12 +58,86 @@
     </ion-list>
   </ion-content>
 </ion-menu>
+
+
+
 <ion-content [fullscreen]="true" class="has-footer has-header" id="main">
+
+
   <ion-refresher slot="fixed" (ionRefresh)="refreshPage($event)">
     <ion-refresher-content pullingIcon="arrow-dropdown" refreshingSpinner="circles" refreshingText="Cargando...">
     </ion-refresher-content>
   </ion-refresher>
 
+
+
+  <div style=" height:100%;width:100%; display: grid;   grid-template-columns: repeat(6, 1fr);
+        grid-template-rows: repeat(6 1fr);  grid-auto-rows: 1fr;    grid-auto-columns:1fr; border:solid white 1px; grid-gap: 1px;">
+
+    <!-- Margin divs -->
+    <div style=" grid-column:1;grid-row:1;"></div>
+    <div style="grid-column:8;grid-row:8;"></div>
+
+
+    <div class="foto-item" (click)="selectImage()">
+      <ion-thumbnail class="foto-src-item">
+        <img src="{{profilePictureTaken}}" style="border-radius:5px; " onError="src = '/assets/images/profilep.png'">
+      </ion-thumbnail>
+    </div>
+
+    <div class="logo2-item" *ngIf="logo2Json">
+      <ion-thumbnail class="foto-src-item">
+        <img src="{{logo2Json.value}}" style="border-radius:5px; " onError="src = '/assets/images/profilep.png'">
+      </ion-thumbnail>
+    </div>
+
+    <div class="logo3-item" *ngIf="logo3Json">
+      <ion-thumbnail class="foto-src-item">
+        <img src="{{logo3Json.value}}" style="border-radius:5px; " onError="src = '/assets/images/profilep.png'">
+      </ion-thumbnail>
+    </div>
+
+    <div class="logoe-item" *ngIf="logoEmpJson">
+      <ion-thumbnail class="foto-src-item">
+        <img src="{{logoEmpJson.value}}" style="border-radius:5px; " onError="src = '/assets/images/profilep.png'">
+      </ion-thumbnail>
+    </div>
+
+
+    <div class="qr-item" *ngIf="qrJson">
+      <ngx-qrcode [value]="qrJson.value">
+      </ngx-qrcode>
+    </div>
+
+
+    <div class="details-item" *ngIf="detailsJson">
+      <div *ngFor="let data of detailsJson.items" style="width:100%;">
+        <p *ngIf="data.value" class="label-det-item"> {{data.label}}</p>
+        <p *ngIf="data.value" class="value-det-item"> {{data.value}}</p>
+        <br>
+      </div>
+    </div>
+
+
+
+    <div class="seccion1-item" *ngIf="details2Json">
+      <ngx-qrcode [value]="createdCode">
+      </ngx-qrcode>
+    </div>
+
+    <div class="seccion2-item">
+      <ngx-qrcode [value]="createdCode" *ngIf="details3Json">
+      </ngx-qrcode>
+    </div>
+
+    <div class="seccion3-item" *ngIf="details4Json">
+      <ngx-qrcode [value]="createdCode">
+      </ngx-qrcode>
+    </div>
+
+  </div>
+
+  <!--
 
 
 
@@ -93,10 +169,10 @@
   <div class="info-item">
     <p *ngIf="dataUser.nombre" class="name-lbl">Nombre</p>
     <h1 *ngIf="dataUser.nombre" class="name-item">{{dataUser.nombre}}</h1>
-  <!--  <p *ngIf="dataUser.puesto" class="name-lbl">Puesto</p>
+  commentadoo  <p *ngIf="dataUser.puesto" class="name-lbl">Puesto</p>
     <h1 *ngIf="dataUser.puesto" class="number-item">{{dataUser.puesto}}</h1>
     <p *ngIf="dataUser.curp" class="number-lbl">CURP</p>
-    <h2 *ngIf="dataUser.curp" class="number-item">{{dataUser.curp}}</h2> -->
+    <h2 *ngIf="dataUser.curp" class="number-item">{{dataUser.curp}}</h2> coomentadoo
 
 
 
@@ -109,8 +185,8 @@
   </ion-thumbnail>
 
 </div>
-
- </ion-content>
+-->
+</ion-content>
 
 
 <ion-toolbar color="secondary" class="footer-icons">

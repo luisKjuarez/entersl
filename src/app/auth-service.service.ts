@@ -8,8 +8,9 @@ import { JwtHelperService } from "@auth0/angular-jwt";
 import { HTTP } from '@ionic-native/http/ngx';
 import { Router } from '@angular/router';
 
-const serverUrl = 'http://85.25.248.90:8080/cred-digital-1.0.0/';
-
+//const serverUrl = 'http://85.25.248.90:8080/cred-digital-1.0.0/';
+//const serverUrl='http://192.168.2.65:1300/';
+const serverUrl='http://192.168.2.65:1300/';
 const helper = new JwtHelperService();
 const TOKEN_KEY = 'jwt-token';
 
@@ -96,8 +97,7 @@ export class AuthServiceService {
     }
 
     this.http.setDataSerializer("json");
-
-    return this.http.post(serverUrl + 'auth/authenticate', postData, this.headers)
+     return this.http.post(serverUrl + 'auth/authenticate', postData, this.headers)
       .then(
         res => {
           this.tokenStr = JSON.parse(res.data).token;
@@ -111,7 +111,8 @@ export class AuthServiceService {
           return storageObs;
         },
         err => {
-           if (err.status == -1)
+        //  this.presentAlert(JSON.stringify(err),"","");
+           if (err.status == -1 || err.status == -4)
             this.presentAlert("Verifique que tenga conexión a internet.", "Error", "No se pudo conectar al servidor.");
           else
             this.presentAlert(JSON.parse(err.error).message, "Error", "");

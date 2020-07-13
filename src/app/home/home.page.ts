@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, ElementRef ,OnInit } from '@angular/core';
+import { Component, ChangeDetectorRef, ElementRef, OnInit } from '@angular/core';
 import { UserDataService } from './../user-data.service';
 import { IconsDataService } from './../icons-data.service';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
@@ -16,18 +16,37 @@ import { StoreUserService } from '../store-user.service';
   styleUrls: ['home.page.scss'],
 })
 
-export class HomePage implements OnInit{
+export class HomePage implements OnInit {
+
+  photoJson: any = null;
+  logoEmpJson: any = null;
+  logo2Json: any = null;
+  logo3Json: any = null;
+  qrJson: any = null;
+  detailsJson: any = null;
+
+  details2Json: any = null;
+  details3Json: any = null;
+  details4Json: any = null;
+
+
   styleTest = " grid-column:4; grid-row:4; border:solid white 3px;";
   dataUser: any;
   dataIcons: any;
-  createdCode: string = "";
+  createdCode: string = "prueba";
   profilePictureTaken: string;
   portrait: boolean;
+  testStyl: string = "<p style='color:red;float:right;''>rojoocj</p><p >jj</p>";
   userSesion = null;
   public notifyEnabled: boolean;
   currentCompany: any;
+
+  seccion1: any = null;
+  seccion2: any = null;
+  seccion3: any = null;
+
   constructor(
-  private elementRef:ElementRef,
+    private elementRef: ElementRef,
     private file: File,
     private navctr: NavController,
     private cache: CacheService,
@@ -50,8 +69,7 @@ export class HomePage implements OnInit{
     this.userSesion = this.auth.getUser();
     this.loadProfilePicture();
   }
-  ionViewDidEnter()
-  {
+  ionViewDidEnter() {
     this.userSesion = this.auth.getUser();
     this.loadProfilePicture();
 
@@ -66,7 +84,7 @@ export class HomePage implements OnInit{
       this.dataUser = this.storeService.getUserData();
       this.splashScreen.hide();
     });
-    this.createdCode = "";
+    this.createdCode = "prueba";
 
 
 
@@ -109,16 +127,125 @@ export class HomePage implements OnInit{
   }
 
 
- col = 1;
+  col = 1;
 
-changeVar(){
-  this.styleTest = " grid-column:"+this.col+"; grid-row:4; border:solid white 3px;";
+  changeVar() {
 
-    this.col++;
-    if(this.col>=5)
-    this.col=1;
-  //    this.elementRef.nativeElement.style.setProperty('--col-pic', this.col+" / span 2");
- }
+    if (this.photoJson != null) {
+      for (let data of this.photoJson.styles) {
+        if (data.name === 'col') {
+          this.elementRef.nativeElement.style.setProperty('--col-pic-port', data.value);
+
+        }
+
+        if (data.name === 'row') {
+          this.elementRef.nativeElement.style.setProperty('--row-pic-port', data.value);
+
+        }
+      }
+
+
+    }
+    if (this.qrJson != null) {
+      for (let data of this.qrJson.styles) {
+        if (data.name === 'col') {
+          this.elementRef.nativeElement.style.setProperty('--col-qr-port', data.value);
+
+        }
+
+        if (data.name === 'row') {
+          this.elementRef.nativeElement.style.setProperty('--row-qr-port', data.value);
+
+        }
+      }
+
+
+    }
+
+    if (this.logoEmpJson != null) {
+      for (let data of this.logoEmpJson.styles) {
+        if (data.name === 'col') {
+          this.elementRef.nativeElement.style.setProperty('--col-logoe-port', data.value);
+
+        }
+
+        if (data.name === 'row') {
+          this.elementRef.nativeElement.style.setProperty('--row-logoe-port', data.value);
+
+        }
+      }
+
+
+    }
+
+    if (this.logo2Json != null) {
+      for (let data of this.logo2Json.styles) {
+        if (data.name === 'col') {
+          this.elementRef.nativeElement.style.setProperty('--col-logo2-port', data.value);
+
+        }
+
+        if (data.name === 'row') {
+          this.elementRef.nativeElement.style.setProperty('--row-logo2-port', data.value);
+
+        }
+      }
+
+
+    }
+
+    if (this.logo3Json != null) {
+      for (let data of this.logo3Json.styles) {
+        if (data.name === 'col') {
+          this.elementRef.nativeElement.style.setProperty('--col-logo3-port', data.value);
+
+        }
+
+        if (data.name === 'row') {
+          this.elementRef.nativeElement.style.setProperty('--row-logo3-port', data.value);
+
+        }
+      }
+
+
+    }
+
+    if (this.detailsJson != null) {
+      for (let data of this.detailsJson.styles) {
+        if (data.name === 'col') {
+          this.elementRef.nativeElement.style.setProperty('--col-det-port', data.value);
+
+        }
+
+        if (data.name === 'row') {
+          this.elementRef.nativeElement.style.setProperty('--row-det-port', data.value);
+
+        }
+
+        if (data.name === 'color') {
+          this.elementRef.nativeElement.style.setProperty('--color-det-port', data.value);
+
+        }
+        if (data.name === 'font-size') {
+          this.elementRef.nativeElement.style.setProperty('--font-size-det-port', data.value);
+
+        }
+      }
+
+
+    }
+
+    if (this.details2Json != null) {
+
+    }
+
+    if (this.details3Json != null) {
+    }
+
+    if (this.details4Json != null) {
+
+    }
+  }
   getIconsData() {
     this.apiIcons.getIconsData().subscribe(res => {
       console.log(res);
@@ -135,15 +262,31 @@ changeVar(){
     })
   }
 
+
+
+  logo2: any = {};
   getUserData(name: string, token: string) {
     this.apiUser.getUserData(name, token).then(res => {
       if (res == null) {
         this.storeService.getUserData().then(res => {
           this.dataUser = JSON.parse(res);
-          this.createdCode = this.dataUser.nss;
+          this.currentCompany = this.dataUser.companies[1].ids[0];
+
+          this.photoJson = this.currentCompany.photo;
+          this.logoEmpJson = this.currentCompany.logoE;
+          this.logo2Json = this.currentCompany.logo2;
+          this.logo3Json = this.currentCompany.logo3;
+          this.qrJson = this.currentCompany.qr;
+          this.detailsJson = this.currentCompany.details;
+          this.details2Json = this.currentCompany.details2;
+          this.details3Json = this.currentCompany.details3;
+          this.details4Json = this.currentCompany.details4;
+          this.changeVar();
+          this.presentAlert("kk4", "", JSON.stringify(this.currentCompany));
+          //    this.createdCode = this.dataUser.nss;
           var dateExpire = new Date(this.dataUser.caducidad)
           var currDate = new Date();
-           if (dateExpire <= currDate) {
+          if (dateExpire <= currDate) {
             this.storeService.logout();
             this.auth.logout();
           }
@@ -153,19 +296,47 @@ changeVar(){
       }
       this.dataUser = JSON.parse(res.data);
       this.storeService.storeUser(this.dataUser);
-      this.createdCode = this.dataUser.nss;
+      this.currentCompany = this.dataUser.companies[1].ids[0];
+      this.photoJson = this.currentCompany.photo;
+      this.logoEmpJson = this.currentCompany.logoE;
+      this.logo2Json = this.currentCompany.logo2;
+      this.logo3Json = this.currentCompany.logo3;
+      this.qrJson = this.currentCompany.qr;
+      this.detailsJson = this.currentCompany.details;
+      this.details2Json = this.currentCompany.details2;
+      this.details3Json = this.currentCompany.details3;
+      this.details4Json = this.currentCompany.details4;
+      this.changeVar();
+      this.presentAlert("kk7", "", JSON.stringify(this.logo2));
+
+
+      //  this.createdCode = this.dataUser.nss;
       var dateExpire = new Date(this.dataUser.caducidad)
       var currDate = new Date();
-       if (dateExpire <= currDate) {
+      if (dateExpire <= currDate) {
         this.storeService.logout();
         this.auth.logout();
       }
       console.log(this.dataUser);
     }, err => {
       this.dataUser = this.storeService.getUserData();
+
+      this.currentCompany = this.dataUser.companies[1].ids[0];
+      this.photoJson = this.currentCompany.photo;
+      this.logoEmpJson = this.currentCompany.logoE;
+      this.logo2Json = this.currentCompany.logo2;
+      this.logo3Json = this.currentCompany.logo3;
+      this.qrJson = this.currentCompany.qr;
+      this.detailsJson = this.currentCompany.details;
+      this.details2Json = this.currentCompany.details2;
+      this.details3Json = this.currentCompany.details3;
+      this.details4Json = this.currentCompany.details4;
+      this.changeVar();
+      this.presentAlert("kk9", "", JSON.stringify(this.currentCompany));
+
       var dateExpire = new Date(this.dataUser.caducidad)
       var currDate = new Date();
-       if (dateExpire <= currDate) {
+      if (dateExpire <= currDate) {
         this.storeService.logout();
         this.auth.logout();
       }
@@ -188,8 +359,10 @@ changeVar(){
 
   changedCompany(event) {
     for (let data of this.dataUser.companies) {
-      if (data.name === event.target.value) {
-        this.currentCompany = data;
+      if (data.companyName === event.target.value) {
+        this.currentCompany = data.ids[0];
+
+        this.logo2 = this.currentCompany.logo2;
         break;
       }
     }
