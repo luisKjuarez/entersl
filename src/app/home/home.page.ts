@@ -263,6 +263,8 @@ export class HomePage implements OnInit {
   }
 
 
+selectedCompani:number=1;
+
 
   logo2: any = {};
   getUserData(name: string, token: string) {
@@ -270,7 +272,7 @@ export class HomePage implements OnInit {
       if (res == null) {
         this.storeService.getUserData().then(res => {
           this.dataUser = JSON.parse(res);
-          this.currentCompany = this.dataUser.companies[1].ids[0];
+          this.currentCompany = this.dataUser.companies[this.selectedCompani].ids[0];
 
           this.photoJson = this.currentCompany.photo;
           this.logoEmpJson = this.currentCompany.logoE;
@@ -296,7 +298,7 @@ export class HomePage implements OnInit {
       }
       this.dataUser = JSON.parse(res.data);
       this.storeService.storeUser(this.dataUser);
-      this.currentCompany = this.dataUser.companies[1].ids[0];
+      this.currentCompany = this.dataUser.companies[this.selectedCompani].ids[0];
       this.photoJson = this.currentCompany.photo;
       this.logoEmpJson = this.currentCompany.logoE;
       this.logo2Json = this.currentCompany.logo2;
@@ -321,7 +323,7 @@ export class HomePage implements OnInit {
     }, err => {
       this.dataUser = this.storeService.getUserData();
 
-      this.currentCompany = this.dataUser.companies[1].ids[0];
+      this.currentCompany = this.dataUser.companies[this.selectedCompani].ids[0];
       this.photoJson = this.currentCompany.photo;
       this.logoEmpJson = this.currentCompany.logoE;
       this.logo2Json = this.currentCompany.logo2;
@@ -358,13 +360,26 @@ export class HomePage implements OnInit {
   }
 
   changedCompany(event) {
+    let count:number=0;
     for (let data of this.dataUser.companies) {
       if (data.companyName === event.target.value) {
         this.currentCompany = data.ids[0];
+        this.selectedCompani=count;
+        this.currentCompany = this.dataUser.companies[this.selectedCompani].ids[0];
+        this.photoJson = this.currentCompany.photo;
+        this.logoEmpJson = this.currentCompany.logoE;
+        this.logo2Json = this.currentCompany.logo2;
+        this.logo3Json = this.currentCompany.logo3;
+        this.qrJson = this.currentCompany.qr;
+        this.detailsJson = this.currentCompany.details;
+        this.details2Json = this.currentCompany.details2;
+        this.details3Json = this.currentCompany.details3;
+        this.details4Json = this.currentCompany.details4;
+        this.changeVar();
 
-        this.logo2 = this.currentCompany.logo2;
-        break;
+         break;
       }
+      count++;
     }
 
     this.presentAlert("", "", JSON.stringify(this.currentCompany));
