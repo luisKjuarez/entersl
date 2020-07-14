@@ -31,6 +31,7 @@ ion-menu {
     align-items: center;
     border: solid white 1px;
     padding-top: 5%;
+    overflow: hidden;
   }
 
   .logo2-item {
@@ -39,6 +40,7 @@ ion-menu {
     align-items: center;
     border: solid white 1px;
     padding-top: 5%;
+    overflow: hidden;
   }
 
   .logo3-item {
@@ -47,6 +49,7 @@ ion-menu {
     align-items: center;
     border: solid white 1px;
     padding-top: 5%;
+    overflow: hidden;
   }
 
   .logoe-item{
@@ -55,6 +58,7 @@ ion-menu {
     align-items: center;
     border: solid white 1px;
     padding-top:5%;
+    overflow: hidden;
   }
 
 .qr-item{
@@ -64,8 +68,7 @@ ion-menu {
   align-items: center;
   border: solid white 1px;
   padding-top:5%;
-
-}
+ }
 
 .details-item{
   grid-column: var(--col-det-port);
@@ -74,6 +77,8 @@ ion-menu {
   border: solid white 1px;
   padding :0;
   margin:0;
+  overflow: auto;
+  word-wrap: break-word;
 //  padding-top:5%;
 }
 
@@ -88,8 +93,7 @@ ion-menu {
   font-family: var(--font-family-title-port);
   text-align: var(--justify-title-port);
 margin: 0;
-
-}
+ }
 
 .value-det-item{
   color:var(--color-det-port);
@@ -97,16 +101,20 @@ margin: 0;
   font-family: var(--font-family-det-port);
   text-align: var(--justify-det-port);
   margin:0;
+
 }
   .seccion1-item{
+    overflow: auto;
 
   }
 
   .seccion2-item{
+    overflow: auto;
 
   }
 
   .seccion3-item{
+    overflow: auto;
 
 
   }
