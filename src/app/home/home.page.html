@@ -1,5 +1,5 @@
 <ion-header [translucent]="false">
-  <ion-toolbar color="primary">
+  <ion-toolbar class="header-items">
     <img src="/assets/images/engine.png" alt="" class="engine-item" (click)="openFirst()">
 
   </ion-toolbar>
@@ -25,33 +25,27 @@
 
       <ion-radio-group (ionChange)="changedCompany($event)">
         <ion-item *ngFor="let data of dataUser.companies">
-          <img src="{{data.logo}}" alt="company item" style="margin-right:10px; height:35px;width:auto;">
-          {{data.companyName}}
+
+            <img   src="{{data?.logo}}" alt="company item" style="border-radius:50%;margin-right:10px; height:35px;width:auto;"  >
+           {{data.companyName}}
           <ion-radio value="{{data.companyName}}" checked="true"></ion-radio>
         </ion-item>
 
       </ion-radio-group>
-      <ion-thumbnail class="logo-item" style="float:left;">
-        <img src="/assets/images/canaco2.png" alt="Contains a logo picture" style="border-radius:9px;">
-      </ion-thumbnail>
 
-      <ion-thumbnail class="logo-item" style="float:right;">
-        <img src="/assets/images/canaco3.png" alt="Contains a logo picture" style="border-radius:9px;">
-      </ion-thumbnail>
+
+
 
 
       <div class="vigencia">
-        <p>{{dataUser.caducidad}}</p>
+        <p style="text-align:center;color:rgba(0,0,0,0.5);">Vigencia</p>
+        <p style="text-align:center;">{{ dataUser.caducidad  | date:'dd-MMM-yyyy'}}</p>
       </div>
-      <ion-item>
+      <ion-item style="content-align:center;margin:0;">
         <ion-button style="float:right;bottom:70px;right10px;" (click)="logout()" color="tertiary">Cerrar sesion</ion-button>
 
       </ion-item>
 
-      <ion-item>
-        <ion-button style="float:right;bottom:70px;right10px;" (click)="changeVar()" color="tertiary">Cerrar sesion</ion-button>
-
-      </ion-item>
 
 
 
@@ -64,19 +58,19 @@
 <ion-content [fullscreen]="true" class="has-footer has-header" id="main">
 
 
-  <ion-refresher slot="fixed" (ionRefresh)="refreshPage($event)">
-    <ion-refresher-content        pullingText="Deslice para recargar." pullingIcon="arrow-dropdown" refreshingSpinner="circles" refreshingText="Cargando...">
+  <ion-refresher slot="fixed" (ionRefresh)="refreshPage($event)" class="has-footer has-header">
+    <ion-refresher-content pullingText="Deslice para recargar." pullingIcon="arrow-dropdown" refreshingSpinner="circles" refreshingText="Cargando...">
     </ion-refresher-content>
   </ion-refresher>
 
 
 
-  <div style=" height:100%;width:100%; display: grid;   grid-template-columns: repeat(6, 1fr);
-        grid-template-rows: repeat(6 1fr);  grid-auto-rows: 1fr;    grid-auto-columns:1fr; border:solid white 1px; grid-gap: 1px;">
+  <div style=" height:100%;width:100%; display: grid;   grid-template-columns: repeat(12, 1fr);
+        grid-template-rows: repeat(12 1fr);  grid-auto-rows: 1fr;    grid-auto-columns:1fr; ">
 
     <!-- Margin divs -->
     <div style=" grid-column:1;grid-row:1;"></div>
-    <div style="grid-column:8;grid-row:8;"></div>
+    <div style="grid-column:12;grid-row:12;"></div>
 
 
     <div class="foto-item" (click)="selectImage()">
@@ -111,27 +105,43 @@
 
 
     <div class="details-item" *ngIf="detailsJson">
-      <div *ngFor="let data of detailsJson.items" style="width:100%;padding:0;margin0;" >
+      <div *ngFor="let data of detailsJson.items" style="width:100%;padding:0;margin0;">
         <p *ngIf="data.value" class="label-det-item"> {{data.label}}</p>
-        <p *ngIf="data.value" class="value-det-item"> {{data.value}}</p> <p style="padding:0;margin:0; line-height:.01vh;">&nbsp;</p>
-       </div>
+        <p *ngIf="data.value" class="value-det-item"> {{data.value}}</p>
+        <p style="padding:0;margin:0; line-height:.01vh;">&nbsp;</p>
+      </div>
     </div>
 
+
+
+    <div class="qr2-item" *ngIf="qr2">
+      <ngx-qrcode [value]="qr2.value">
+      </ngx-qrcode>
+    </div>
 
 
     <div class="seccion1-item" *ngIf="details2Json">
-      <ngx-qrcode [value]="createdCode">
-      </ngx-qrcode>
+      <div *ngFor="let data of details2Json.items" style="width:100%;padding:0;margin0;">
+        <p *ngIf="data.value" class="label-det2-item"> {{data.label}}</p>
+        <p *ngIf="data.value" class="value-det2-item"> {{data.value}}</p>
+        <p style="padding:0;margin:0; line-height:.01vh;">&nbsp;</p>
+      </div>
     </div>
 
-    <div class="seccion2-item">
-      <ngx-qrcode [value]="createdCode" *ngIf="details3Json">
-      </ngx-qrcode>
+    <div class="seccion2-item" *ngIf="details3Json">
+      <div *ngFor="let data of details3Json.items" style="width:100%;padding:0;margin0;">
+        <p *ngIf="data.value" class="label-det3-item"> {{data.label}}</p>
+        <p *ngIf="data.value" class="value-det3-item"> {{data.value}}</p>
+        <p style="padding:0;margin:0; line-height:.01vh;">&nbsp;</p>
+      </div>
     </div>
 
     <div class="seccion3-item" *ngIf="details4Json">
-      <ngx-qrcode [value]="createdCode">
-      </ngx-qrcode>
+      <div *ngFor="let data of details4Json.items" style="width:100%;padding:0;margin0;">
+        <p *ngIf="data.value" class="label-det4-item"> {{data.label}}</p>
+        <p *ngIf="data.value" class="value-det4-item"> {{data.value}}</p>
+        <p style="padding:0;margin:0; line-height:.01vh;">&nbsp;</p>
+      </div>
     </div>
 
   </div>
@@ -188,13 +198,13 @@
 </ion-content>
 
 
-<ion-toolbar color="secondary" class="footer-icons">
+<ion-toolbar class="footer-icons">
   <ion-item class="icon-item">
     <a href="https://www.entersl.com.mx"> <img src="/assets/images/enterlogo.png" alt="company logo" class="img-icon">
     </a>
   </ion-item>
   <ion-item *ngFor="let data of dataIcons" class="icon-item">
-    <a href="{{data.url}}"> <img src="{{data.logo}}" alt="company item" class="img-icon">
+    <a href="{{data.url}}" style=" display:inline;"> <img src="{{data.logo}}" alt="company item" class="img-icon">
 
     </a>
   </ion-item>
