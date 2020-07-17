@@ -26,9 +26,9 @@
       <ion-radio-group (ionChange)="changedCompany($event)">
         <ion-item *ngFor="let data of dataUser.companies">
 
-            <img   src="{{data?.logo}}" alt="company item" style="border-radius:50%;margin-right:10px; height:35px;width:auto;"  >
-           {{data.companyName}}
-          <ion-radio value="{{data.companyName}}" checked="true"></ion-radio>
+          <img src="{{data?.logo}}" alt="company item" style="border-radius:50%;margin-right:10px; height:35px;width:auto;">
+      &nbsp;   {{data.companyName}}        &nbsp;&nbsp;
+          <ion-radio style="float:right;" value="{{data.companyName}}" checked="true"></ion-radio>
         </ion-item>
 
       </ion-radio-group>
@@ -37,19 +37,23 @@
 
 
 
-      <div class="vigencia">
-        <p style="text-align:center;color:rgba(0,0,0,0.5);">Vigencia</p>
-        <p style="text-align:center;">{{ dataUser.caducidad  | date:'dd-MMM-yyyy'}}</p>
-      </div>
-      <ion-item style="content-align:center;margin:0;">
-        <ion-button style="float:right;bottom:70px;right10px;" (click)="logout()" color="tertiary">Cerrar sesion</ion-button>
 
-      </ion-item>
+
+
+
 
 
 
 
     </ion-list>
+    <div>
+      <p style="text-align:center;color:rgba(0,0,0,0.5);">Vigencia</p>
+      <p style="text-align:center;">{{ currentVigency  | date:'dd-MMM-yyyy'}}</p>
+    </div>
+    <div style="content-align:center;margin:0 auto;position:absolute;bottom:10px;width:100%; text-align:center;">
+      <ion-button style="margin:0 auto;" (click)="logout()" color="tertiary">Cerrar sesion</ion-button>
+
+    </div>
   </ion-content>
 </ion-menu>
 

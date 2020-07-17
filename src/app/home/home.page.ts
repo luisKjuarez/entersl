@@ -27,7 +27,11 @@ export class HomePage implements OnInit {
   details2Json: any = null;
   details3Json: any = null;
   details4Json: any = null;
+  selectedCompani: number = 0;
 
+
+
+  currentVigency: any = null;
   qr2: any = null;
 
   styleTest = " grid-column:4; grid-row:4; border:solid white 3px;";
@@ -131,12 +135,12 @@ export class HomePage implements OnInit {
 
   changeVar() {
 
-if(this.currentCompany.headerColor!=null)
-this.elementRef.nativeElement.style.setProperty("--headercolor-port", this.currentCompany.headerColor);
+    if (this.currentCompany.headerColor != null)
+      this.elementRef.nativeElement.style.setProperty("--headercolor-port", this.currentCompany.headerColor);
 
 
-if(this.currentCompany.footerColor!=null)
-this.elementRef.nativeElement.style.setProperty("--footercolor-port", this.currentCompany.footerColor);
+    if (this.currentCompany.footerColor != null)
+      this.elementRef.nativeElement.style.setProperty("--footercolor-port", this.currentCompany.footerColor);
 
     if (this.currentCompany.fondoRGB != null)
       this.elementRef.nativeElement.style.setProperty("--bkcolor-port", this.currentCompany.fondoRGB);
@@ -154,7 +158,7 @@ this.elementRef.nativeElement.style.setProperty("--footercolor-port", this.curre
 
 
     }
-    if(this.qr2!=null){
+    if (this.qr2 != null) {
       for (let data of this.qr2.styles) {
         this.elementRef.nativeElement.style.setProperty(data.name, data.value);
 
@@ -233,10 +237,6 @@ this.elementRef.nativeElement.style.setProperty("--footercolor-port", this.curre
   }
 
 
-  selectedCompani: number = 0;
-
-
-  logo2: any = {};
   getUserData(name: string, token: string) {
     this.apiUser.getUserData(name, token).then(res => {
       if (res == null) {
@@ -245,6 +245,7 @@ this.elementRef.nativeElement.style.setProperty("--footercolor-port", this.curre
 
           this.currentCompany = this.dataUser.companies[this.selectedCompani].ids[0];
           this.dataIcons = this.dataUser.companies[this.selectedCompani].anuncios;
+          this.currentVigency = this.dataUser.companies[this.selectedCompani].vigencia;
           this.photoJson = this.currentCompany.photo;
           this.logoEmpJson = this.currentCompany.logoE;
           this.logo2Json = this.currentCompany.logo2;
@@ -259,12 +260,12 @@ this.elementRef.nativeElement.style.setProperty("--footercolor-port", this.curre
           this.changeVar();
           //  this.presentAlert("kk4", "", JSON.stringify(this.currentCompany));
           //    this.createdCode = this.dataUser.nss;
-          var dateExpire = new Date(this.dataUser.caducidad)
-          var currDate = new Date();
-          if (dateExpire <= currDate) {
-            this.storeService.logout();
-            this.auth.logout();
-          }
+          /*    var dateExpire = new Date(this.dataUser.caducidad)
+              var currDate = new Date();
+              if (dateExpire <= currDate) {
+                this.storeService.logout();
+                this.auth.logout();
+              }*/
         }
         );
         return;
@@ -273,6 +274,7 @@ this.elementRef.nativeElement.style.setProperty("--footercolor-port", this.curre
       this.storeService.storeUser(this.dataUser);
       this.currentCompany = this.dataUser.companies[this.selectedCompani].ids[0];
       this.dataIcons = this.dataUser.companies[this.selectedCompani].anuncios;
+      this.currentVigency = this.dataUser.companies[this.selectedCompani].vigencia;
 
       this.photoJson = this.currentCompany.photo;
       this.logoEmpJson = this.currentCompany.logoE;
@@ -285,22 +287,24 @@ this.elementRef.nativeElement.style.setProperty("--footercolor-port", this.curre
       this.details4Json = this.currentCompany.details4;
       this.qr2 = this.currentCompany.qr2;
       this.changeVar();
+
       //  this.presentAlert("kk7", "", JSON.stringify(this.logo2));
 
 
       //  this.createdCode = this.dataUser.nss;
       var dateExpire = new Date(this.dataUser.caducidad)
-      var currDate = new Date();
-      if (dateExpire <= currDate) {
-        this.storeService.logout();
-        this.auth.logout();
-      }
-      console.log(this.dataUser);
+      /*  var currDate = new Date();
+        if (dateExpire <= currDate) {
+          this.storeService.logout();
+          this.auth.logout();
+        }*/
+      //  console.log(this.dataUser);
     }, err => {
       this.dataUser = this.storeService.getUserData();
 
       this.currentCompany = this.dataUser.companies[this.selectedCompani].ids[0];
       this.dataIcons = this.dataUser.companies[this.selectedCompani].anuncios;
+      this.currentVigency = this.dataUser.companies[this.selectedCompani].vigencia;
 
       this.photoJson = this.currentCompany.photo;
       this.logoEmpJson = this.currentCompany.logoE;
@@ -316,12 +320,12 @@ this.elementRef.nativeElement.style.setProperty("--footercolor-port", this.curre
       this.changeVar();
       //  this.presentAlert("kk9", "", JSON.stringify(this.currentCompany));
 
-      var dateExpire = new Date(this.dataUser.caducidad)
-      var currDate = new Date();
-      if (dateExpire <= currDate) {
-        this.storeService.logout();
-        this.auth.logout();
-      }
+      /*    var dateExpire = new Date(this.dataUser.caducidad)
+          var currDate = new Date();
+          if (dateExpire <= currDate) {
+            this.storeService.logout();
+            this.auth.logout();
+          }*/
     });
 
   }
@@ -347,6 +351,7 @@ this.elementRef.nativeElement.style.setProperty("--footercolor-port", this.curre
         this.selectedCompani = count;
         this.currentCompany = this.dataUser.companies[this.selectedCompani].ids[0];
         this.dataIcons = this.dataUser.companies[this.selectedCompani].anuncios;
+        this.currentVigency = this.dataUser.companies[this.selectedCompani].vigencia;
 
         this.photoJson = this.currentCompany.photo;
         this.logoEmpJson = this.currentCompany.logoE;
