@@ -5,6 +5,7 @@ import { HTTP } from '@ionic-native/http/ngx';
  const serverUrl = 'http://85.25.248.90:8080/cred-digital-debug-1.0.0/';
 //const serverUrl='http://192.168.2.65:1300/';
 //const serverUrl='http://192.168.2.65:1300/';
+ //const serverUrl='http://192.168.2.70:1300/';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,9 @@ export class UserDataService {
 
 
   constructor(private http: HTTP,
-    ) { }
+    ) {
+
+    }
 
 
 

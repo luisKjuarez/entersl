@@ -8,6 +8,7 @@ import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { AuthServiceService } from '../auth-service.service';
 import { StoreUserService } from '../store-user.service';
+import { NavigationExtras, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -62,15 +63,24 @@ export class HomePage implements OnInit {
     private storeService: StoreUserService,
     private auth: AuthServiceService,
     public apiUser: UserDataService, public screenO: ScreenOrientation,
-    private menu: MenuController
+    private menu: MenuController,
+    private route: ActivatedRoute
 
   ) {
+   this.route.params.subscribe(params => {
+if(params.resT==1){
+this.uploadImg();
 
+}
+    });
 
   }
 
   ionViewWillEnter() {
+
     this.userSesion = this.auth.getUser();
+    this.getUserData(this.auth.getUser().namep, this.auth.getToken());
+
     this.loadProfilePicture();
   }
   ionViewDidEnter() {
@@ -232,7 +242,10 @@ export class HomePage implements OnInit {
 
   uploadImg() {
     this.apiUser.uploadImage(this.auth.getUser().namep, this.auth.getToken(), this.file.dataDirectory + "profilept.jpg").then(res => {
+    //  this.presentAlert("res","",JSON.stringify(res));
+
     }, err => {
+  //    this.presentAlert("err","",JSON.stringify(err));
     })
   }
 
@@ -242,6 +255,25 @@ export class HomePage implements OnInit {
       if (res == null) {
         this.storeService.getUserData().then(res => {
           this.dataUser = JSON.parse(res);
+          var banValid: any = false;
+          var indexCom = 0;
+          for (let data of this.dataUser.companies) {
+            var currDate = new Date();
+            var dateExpire = new Date(data.vigencia)
+            if (currDate < dateExpire) {
+              banValid = true;
+              break;
+            }
+            indexCom++;
+          }
+
+          if (banValid == false) {
+            this.presentAlert("Sesion expirada", "", "Este usuario no contiene ninguna credencial vigente, contacte a su administradror.");
+            this.storeService.logout();
+            this.auth.logout();
+          }
+
+          this.selectedCompani = indexCom;
 
           this.currentCompany = this.dataUser.companies[this.selectedCompani].ids[0];
           this.dataIcons = this.dataUser.companies[this.selectedCompani].anuncios;
@@ -272,6 +304,28 @@ export class HomePage implements OnInit {
       }
       this.dataUser = JSON.parse(res.data);
       this.storeService.storeUser(this.dataUser);
+
+
+      var banValid: any = false;
+      var indexCom = 0;
+      for (let data of this.dataUser.companies) {
+        var currDate = new Date();
+        var dateExpire = new Date(data.vigencia)
+        if (currDate < dateExpire) {
+          banValid = true;
+          break;
+        }
+        indexCom++;
+      }
+
+      if (banValid == false) {
+        this.presentAlert("Sesion expirada", "", "Este usuario no contiene ninguna credencial vigente, contacte a su administradror.");
+        this.storeService.logout();
+        this.auth.logout();
+      }
+
+      this.selectedCompani = indexCom;
+
       this.currentCompany = this.dataUser.companies[this.selectedCompani].ids[0];
       this.dataIcons = this.dataUser.companies[this.selectedCompani].anuncios;
       this.currentVigency = this.dataUser.companies[this.selectedCompani].vigencia;
@@ -301,6 +355,26 @@ export class HomePage implements OnInit {
       //  console.log(this.dataUser);
     }, err => {
       this.dataUser = this.storeService.getUserData();
+
+      var banValid: any = false;
+      var indexCom = 0;
+      for (let data of this.dataUser.companies) {
+        var currDate = new Date();
+        var dateExpire = new Date(data.vigencia)
+        if (currDate < dateExpire) {
+          banValid = true;
+          break;
+        }
+        indexCom++;
+      }
+
+      if (banValid == false) {
+        this.presentAlert("Sesion expirada", "", "Este usuario no contiene ninguna credencial vigente, contacte a su administradror.");
+        this.storeService.logout();
+        this.auth.logout();
+      }
+
+      this.selectedCompani = indexCom;
 
       this.currentCompany = this.dataUser.companies[this.selectedCompani].ids[0];
       this.dataIcons = this.dataUser.companies[this.selectedCompani].anuncios;
@@ -347,6 +421,18 @@ export class HomePage implements OnInit {
     let count: number = 0;
     for (let data of this.dataUser.companies) {
       if (data.companyName === event.target.value) {
+
+
+        var currDate = new Date();
+        var dateExpire = new Date(data.vigencia)
+        if (dateExpire <= currDate) {
+          this.presentAlert("Credencial no valida", "", "Esta credencial no esta vigente, contacte a su administrador.");
+          return;
+        }
+
+
+
+
         this.currentCompany = data.ids[0];
         this.selectedCompani = count;
         this.currentCompany = this.dataUser.companies[this.selectedCompani].ids[0];
@@ -401,7 +487,7 @@ export class HomePage implements OnInit {
 
     this.profilePictureTaken = this.webview.convertFileSrc(this.file.dataDirectory + "profilept.jpg?var=" + Math.random());
 
-    this.uploadImg();
+  //  this.uploadImg();
   }
 
 
@@ -424,8 +510,10 @@ export class HomePage implements OnInit {
 
 
 
-  async selectImage() {
-    this.navctr.navigateForward(['/crop-page']);
+    selectImage() {
+
+
+    this.navctr.navigateRoot(['/crop-page']);
   }
 
 

@@ -5,7 +5,8 @@ import { ImageCroppedEvent, ImageCropperComponent } from 'ngx-image-cropper';
 import { Observable } from 'rxjs/internal/Observable';
 import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/Camera/ngx';
 import { Router } from '@angular/router';
-//another change
+import { UserDataService } from '../user-data.service';
+ //another change
 @Component({
   selector: 'app-crop-page',
   templateUrl: './crop-page.page.html',
@@ -17,15 +18,16 @@ export class CropPagePage implements OnInit {
   cropperOptions: any;
   scaleValY = 1;
   myImage = null;
+
   croppedImage = null;
   scaleValX = 1;
   constructor(
     private file: File,
     private router: Router,
-
-    private actionSheetController: ActionSheetController,
+     private actionSheetController: ActionSheetController,
     private camera: Camera,
     private toastController: ToastController,
+      public apiUser: UserDataService,
     private alertController: AlertController,
     private changeDetectorRef: ChangeDetectorRef
   ) {
@@ -43,12 +45,28 @@ export class CropPagePage implements OnInit {
     };
   }
 
+
+    ionViewWillEnter() {
+      this.myImage=null;
+      this.croppedImage=null;
+      this.cropperOptions = {
+        dragMode: 'crop',
+        aspectRatio: 1,
+        autoCrop: true,
+        movable: true,
+        zoomable: true,
+        scalable: true,
+        autoCropArea: 0.8,
+      };
+      this.selectImage();
+      this.changeDetectorRef.detectChanges();
+    }
   ngOnInit() {
 
-    this.selectImage();
-    this.changeDetectorRef.detectChanges();
+
   }
 
+ 
   async  takePicture(sourceType: PictureSourceType) {
     var options: CameraOptions;
     if (this.camera.PictureSourceType.PHOTOLIBRARY == sourceType)
@@ -78,7 +96,7 @@ export class CropPagePage implements OnInit {
       this.myImage = 'data:image/jpeg;base64,' + data;
 
     }, err => {
-      this.return2Home();
+      this.return2Home(0);
     });
   }
 
@@ -105,7 +123,7 @@ export class CropPagePage implements OnInit {
         text: 'Cancelar',
         role: 'cancel',
         handler: () => {
-          this.return2Home();
+          this.return2Home(0);
         }
       }
       ]
@@ -146,14 +164,17 @@ export class CropPagePage implements OnInit {
 
 
 
-  return2Home() {
+  return2Home(resT:number) {
 
-    this.router.navigate(['/home'])
-      .then(() => {
-       });
+    this.router.navigate(['/home',{resT:resT}]);
+    /*  .then(() => {
+      },err=>{
+        this.presentAlert(JSON.stringify(err));
+      });*/
   }
+
   cancel() {
-    this.return2Home();
+    this.return2Home(0);
     //return to home
   }
 
@@ -162,10 +183,12 @@ export class CropPagePage implements OnInit {
     let blob = this.b64toBlob(realData, 'image/jpeg');
 
     this.file.writeFile(this.file.dataDirectory, 'profilept.jpg', blob, { replace: true }).then(response => {
-      this.return2Home();
+      this.presentToast("Imagen seleccionada");
+    //  this.uploadImg();
+      this.return2Home(1);
     }).catch(err => {
       this.presentAlert("error guardando");
-      this.return2Home();
+      this.return2Home(0);
     })
 
   }
@@ -204,7 +227,6 @@ export class CropPagePage implements OnInit {
       message: message,
       buttons: ['OK']
     });
-
     await alert.present();
   }
 
