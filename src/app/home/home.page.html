@@ -9,7 +9,7 @@
 <ion-menu side="end" menuId="first" contentId="main" class="menu-side-item">
 
   <ion-header>
-    <ion-toolbar color="tertiary">
+    <ion-toolbar class="header-menu-item">
       <ion-title>Configuración</ion-title>
     </ion-toolbar>
   </ion-header>
@@ -23,18 +23,15 @@
 
       <ion-item>Credenciales</ion-item>
 
-      <ion-radio-group (ionChange)="changedCompany($event)">
+      <ion-radio-group [(ngModel)]="selectedCVE"  (ionChange)="changedCompany($event)">
         <ion-item *ngFor="let data of dataUser.companies">
 
-          <img src="{{data?.logo}}" alt="company item" style="border-radius:50%;margin-right:10px; height:35px;width:auto;">
-      &nbsp;   {{data.companyName}}        &nbsp;&nbsp;
-          <ion-radio style="float:right;" value="{{data.companyName}}" checked="true"></ion-radio>
+          <img src="{{data?.logo}}" alt="company item" style="border-radius:50%;margin-right:10px; height:auto;width:35px;">
+          &nbsp; {{data.clave}} &nbsp;&nbsp;
+          <ion-radio  value="{{data.clave}} " ></ion-radio>
         </ion-item>
 
       </ion-radio-group>
-
-
-
 
 
 
@@ -50,11 +47,34 @@
       <p style="text-align:center;color:rgba(0,0,0,0.5);">Vigencia</p>
       <p style="text-align:center;">{{ currentVigency  | date:'dd-MMM-yyyy'}}</p>
     </div>
-    <div style="content-align:center;margin:0 auto;position:absolute;bottom:10px;width:100%; text-align:center;">
+    <div style="content-align:center;margin:0 auto;width:100%; text-align:center;">
       <ion-button style="margin:0 auto;" (click)="logout()" color="tertiary">Cerrar sesion</ion-button>
 
     </div>
+
+
+
   </ion-content>
+
+
+  <lib-ionic-pullup  class="pullup-item"  [(state)]="footerState" [toolbarTopMargin]="100" [minBottomVisible]="85">
+    <lib-ionic-pullup-tab class="tab" (click)="toggleFooter()"   >
+
+     </lib-ionic-pullup-tab>
+    <ion-toolbar class="toolbar-pullup-item"  (click)="toggleFooter()" #ionDragFooter   >
+      <ion-title></ion-title>
+    </ion-toolbar>
+    <ion-content>
+      <ion-item class="icon-item">
+        <a href="https://www.entersl.com.mx"> <img src="/assets/images/enterlogo.png" alt="company logo" class="img-icon">
+        </a>
+      </ion-item>
+      <ion-item *ngFor="let data of dataIcons" class="icon-item">
+        <a href="{{data.url}}" style=" display:inline;"> <img src="{{data.logo}}" alt="company item" class="img-icon">
+
+        </a>
+      </ion-item>    </ion-content>
+  </lib-ionic-pullup>
 </ion-menu>
 
 

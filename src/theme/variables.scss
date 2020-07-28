@@ -12,7 +12,7 @@
 --headercolor-port:#FFFF00;
 --footercolor-port:#ffff00;
 
-
+--urls-color:#0000FF;
 
   /**PHOTO**/
   --row-pic-port: 2 / span 2;
@@ -73,6 +73,7 @@
   --justify-title-det-port:center;
   --font-size-title-det-port:.7em;
   --font-family-title-det-port:Arial;
+
 
   --border-top-det-port:0px solid white;
   --border-bottom-det-port:0px solid white;
@@ -143,35 +144,161 @@
 
 
 
+
+
+
+
+
+
+
+
   /** LANDSCAPE VARIABLES **/
-  /**PHOTO**/
-  --row-pic-land:1;
-  --col-pic-land:3 span / 2;
-/**LOGO EMPRESA**/
-  --row-logoe-land:1;
-  --col-logoe-land:1;
-/**LOGO2**/
-  --row-logo2-land:1;
-  --col-logo2-land:6;
-/**LOGO3**/
-  --col-logo3-land:1;
-  --row-logo3-land:6;
 
-//** QR  **/
-  --col-qr-land:3;
-  --row-qr-land:5;
 
-/** DETAILS  **/
-  --col-det-land:2 span / 4;
-  --row-det-land:3;
-  --color-det-land:white;
-  --justify-det-land:center;
-  --font-size-det-land:1em;
-  --font-family-det-land:Arial;
-  --color-title-land:rgba(255,255,255,0.5);
-  --justify-title-land:center;
-  --font-size--title-land:.7em;
-  --font-family-title-land:Arial;
+
+
+
+
+  /** CRED **/
+  --bkcolor-land:#FFFFFF;
+  --bkimage-land:"";
+
+  --headercolor-land:#FFFF00;
+  --footercolor-land:#ffff00;
+
+
+
+    /**PHOTO**/
+    --row-pic-land: 2 / span 2;
+    --col-pic-land: 4 / span 2 ;
+    --border-top-pic-land:0px solid white;
+    --border-bottom-pic-land:0px solid white;
+    --border-left-pic-land:0px solid white;
+    --border-right-pic-land:0px solid white;
+
+  /**LOGO EMPRESA**/
+    --row-logoe-land:2;
+    --col-logoe-land:2;
+    --border-top-logoe-land:0px solid white;
+    --border-bottom-logoe-land:0px solid white;
+    --border-left-logoe-land:0px solid white;
+    --border-right-logoe-land:0px solid white;
+  /**LOGO2**/
+    --row-logo2-land:2;
+    --col-logo2-land:7;
+    --border-top-logo2-land:0px solid white;
+    --border-bottom-logo2-land:0px solid white;
+    --border-left-logo2-land:0px solid white;
+    --border-right-logo2-land:0px solid white;
+  /**LOGO3**/
+    --col-logo3-land:2;
+    --row-logo3-land:7;
+    --border-top-logo3-land:0px solid white;
+    --border-bottom-logo3-land:0px solid white;
+    --border-left-logo3-land:0px solid white;
+    --border-right-logo3-land:0px solid white;
+
+  //** QR  **/
+    --col-qr-land:4 / span 2;
+    --row-qr-land:6;
+    --border-top-qr-land:0px solid white;
+    --border-bottom-qr-land:0px solid white;
+    --border-left-qr-land:0px solid white;
+    --border-right-qr-land:0px solid white;
+
+
+    //** QR 2 **/
+      --col-qr2-land:4 / span 2;
+      --row-qr2-land:6;
+      --border-top-qr2-land:0px solid white;
+      --border-bottom-qr2-land:0px solid white;
+      --border-left-qr2-land:0px solid white;
+      --border-right-qr2-land:0px solid white;
+
+  /** DETAILS  **/
+    --col-det-land:3 / span  4;
+    --row-det-land:4;
+    --color-det-land:white;
+    --justify-det-land:center;
+    --font-size-det-land:1em;
+    --font-family-det-land:Arial;
+
+    --color-title-det-land:rgba(255,255,255,0.5);
+    --justify-title-det-land:center;
+    --font-size-title-det-land:.7em;
+    --font-family-title-det-land:Arial;
+
+    --border-top-det-land:0px solid white;
+    --border-bottom-det-land:0px solid white;
+    --border-left-det-land:0px solid white;
+    --border-right-det-land:0px solid white;
+
+
+    /** DETAILS 2**/
+    --col-det2-land:3 / span  4;
+    --row-det2-land:4;
+    --color-det2-land:white;
+    --justify-det2-land:center;
+    --font-size-det2-land:1em;
+    --font-family-det2-land:Arial;
+
+    --color-title-det2-land:rgba(255,255,255,0.5);
+    --justify-title-det2-land:center;
+    --font-size-title-det2-land:.7em;
+    --font-family-title-det2-land:Arial;
+
+    --border-top-det2-land:0px solid white;
+    --border-bottom-det2-land:0px solid white;
+    --border-left-det2-land:0px solid white;
+    --border-right-det2-land:0px solid white;
+
+
+    /**DETEILS 3**/
+    --col-det3-land:3 / span  4;
+    --row-det3-land:4;
+    --color-det3-land:white;
+    --justify-det3-land:center;
+    --font-size-det3-land:1em;
+    --font-family-det3-land:Arial;
+
+    --color-title-det3-land:rgba(255,255,255,0.5);
+    --justify-title-det3-land:center;
+    --font-size-title-det3-land:.7em;
+    --font-family-title-det3-land:Arial;
+
+    --border-top-det3-land:0px solid white;
+    --border-bottom-det3-land:0px solid white;
+    --border-left-det3-land:0px solid white;
+    --border-right-det3-land:0px solid white;
+
+
+    /**DETAILS 4**/
+    --col-det4-land:3 / span  4;
+    --row-det4-land:4;
+    --color-det4-land:white;
+    --justify-det4-land:center;
+    --font-size-det4-land:1em;
+    --font-family-det4-land:Arial;
+
+    --color-title-det4-land:rgba(255,255,255,0.5);
+    --justify-title-det4-land:center;
+    --font-size-title-det4-land:.7em;
+    --font-family-title-det4-land:Arial;
+
+    --border-top-det4-land:0px solid white;
+    --border-bottom-det4-land:0px solid white;
+    --border-left-det4-land:0px solid white;
+    --border-right-det4-land:0px solid white;
+
+
+
+
+
+
+
+
+
+
 
 
   /** primary **/

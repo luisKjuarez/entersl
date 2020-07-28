@@ -9,7 +9,7 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { AuthServiceService } from '../auth-service.service';
 import { StoreUserService } from '../store-user.service';
 import { NavigationExtras, ActivatedRoute } from '@angular/router';
-
+import { IonPullUpFooterState } from 'ionic-pullup';
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -31,7 +31,7 @@ export class HomePage implements OnInit {
   selectedCompani: number = 0;
 
 
-
+  footerState: IonPullUpFooterState;
   currentVigency: any = null;
   qr2: any = null;
 
@@ -67,15 +67,26 @@ export class HomePage implements OnInit {
     private route: ActivatedRoute
 
   ) {
-   this.route.params.subscribe(params => {
-if(params.resT==1){
-this.uploadImg();
+    this.route.params.subscribe(params => {
+      if (params.resT == 1) {
+        this.uploadImg();
 
-}
+      }
     });
+    this.footerState = IonPullUpFooterState.Collapsed;
 
   }
+  footerExpanded() {
+    console.log('Footer expanded!');
+  }
 
+  footerCollapsed() {
+    console.log('Footer collapsed!');
+  }
+
+  toggleFooter() {
+    this.footerState = this.footerState == IonPullUpFooterState.Collapsed ? IonPullUpFooterState.Expanded : IonPullUpFooterState.Collapsed;
+  }
   ionViewWillEnter() {
 
     this.userSesion = this.auth.getUser();
@@ -93,6 +104,34 @@ this.uploadImg();
     this.dataUser = { "nombre": "", "nss": "", "caducidad": "", "puesto": "" };
     this.currentCompany = { "nombre": "" };
     this.plt.ready().then((readySource) => {
+      this.screenO.onChange().subscribe(
+        res => {
+          this.closeFirst();
+          var port = true;
+          if (this.screenO.type.toUpperCase().includes('PORTRAIT'))
+            port = true;
+          else
+            port = false;
+
+          for (let data of this.dataUser.companies[this.selectedCompani].ids) {
+
+            if (data.orientation == 1 && port == false)//LANDSCAPE
+            {
+              this.currentCompany = data;
+              break;
+            }
+            if (data.orientation == 2 && port == true)//PORTRAIT
+            {
+              this.currentCompany = data;
+              break;
+            }
+          }
+
+          this.setSecciones();
+          this.initApis();
+
+        }
+      );
       this.initApis();
       this.loadProfilePicture();
       this.dataUser = this.storeService.getUserData();
@@ -106,6 +145,32 @@ this.uploadImg();
   }
 
 
+  setSecciones() {
+
+    this.photoJson = null;
+    this.logoEmpJson = null;
+    this.logo2Json = null;
+    this.logo3Json = null;
+    this.qrJson = null;
+    this.detailsJson = null;
+    this.details2Json = null;
+    this.details3Json = null;
+    this.details4Json = null;
+    this.qr2 = null;
+
+    this.photoJson = this.currentCompany ?.photo;
+    this.logoEmpJson = this.currentCompany ?.logoE;
+    this.logo2Json = this.currentCompany ?.logo2;
+    this.logo3Json = this.currentCompany ?.logo3;
+    this.qrJson = this.currentCompany ?.qr;
+    this.detailsJson = this.currentCompany ?.details;
+    this.details2Json = this.currentCompany ?.details2;
+    this.details3Json = this.currentCompany ?.details3;
+    this.details4Json = this.currentCompany ?.details4;
+    this.qr2 = this.currentCompany ?.qr2;
+
+
+  }
 
 
 
@@ -148,7 +213,8 @@ this.uploadImg();
     if (this.currentCompany.headerColor != null)
       this.elementRef.nativeElement.style.setProperty("--headercolor-port", this.currentCompany.headerColor);
 
-
+    if (this.currentCompany.urlsColor != null)
+      this.elementRef.nativeElement.style.setProperty("--urls-color", this.currentCompany.urlsColor);
     if (this.currentCompany.footerColor != null)
       this.elementRef.nativeElement.style.setProperty("--footercolor-port", this.currentCompany.footerColor);
 
@@ -242,13 +308,14 @@ this.uploadImg();
 
   uploadImg() {
     this.apiUser.uploadImage(this.auth.getUser().namep, this.auth.getToken(), this.file.dataDirectory + "profilept.jpg").then(res => {
-    //  this.presentAlert("res","",JSON.stringify(res));
+      //  this.presentAlert("res","",JSON.stringify(res));
 
     }, err => {
-  //    this.presentAlert("err","",JSON.stringify(err));
+      //    this.presentAlert("err","",JSON.stringify(err));
     })
   }
 
+  valcheck: any = true;
 
   getUserData(name: string, token: string) {
     this.apiUser.getUserData(name, token).then(res => {
@@ -273,21 +340,41 @@ this.uploadImg();
             this.auth.logout();
           }
 
-          this.selectedCompani = indexCom;
 
-          this.currentCompany = this.dataUser.companies[this.selectedCompani].ids[0];
+          this.selectedCompani = indexCom;
+          var banP = false;
+          if (this.screenO.type.toUpperCase().includes('PORTRAIT')) {
+            banP = true;
+          }
+          for (let data of this.dataUser.companies[this.selectedCompani].ids) {
+            if (banP == true && data.orientation == 2) {
+              this.currentCompany = data;
+              break;
+            }
+            if (banP == false && data.orientation == 1) {
+              this.currentCompany = data;
+              break;
+            }
+          }
+          //  this.currentCompany = this.dataUser.companies[this.selectedCompani].ids[0];
           this.dataIcons = this.dataUser.companies[this.selectedCompani].anuncios;
           this.currentVigency = this.dataUser.companies[this.selectedCompani].vigencia;
-          this.photoJson = this.currentCompany.photo;
-          this.logoEmpJson = this.currentCompany.logoE;
-          this.logo2Json = this.currentCompany.logo2;
-          this.logo3Json = this.currentCompany.logo3;
-          this.qrJson = this.currentCompany.qr;
-          this.detailsJson = this.currentCompany.details;
-          this.details2Json = this.currentCompany.details2;
-          this.details3Json = this.currentCompany.details3;
-          this.details4Json = this.currentCompany.details4;
-          this.qr2 = this.currentCompany.qr2;
+          this.selectedCVE = this.dataUser.companies[this.selectedCompani].clave;
+
+          /*    this.photoJson = this.currentCompany.photo;
+              this.logoEmpJson = this.currentCompany.logoE;
+              this.logo2Json = this.currentCompany.logo2;
+              this.logo3Json = this.currentCompany.logo3;
+              this.qrJson = this.currentCompany.qr;
+              this.detailsJson = this.currentCompany.details;
+              this.details2Json = this.currentCompany.details2;
+              this.details3Json = this.currentCompany.details3;
+              this.details4Json = this.currentCompany.details4;
+              this.qr2 = this.currentCompany.qr2;
+    */
+          this.setSecciones();
+
+
 
           this.changeVar();
           //  this.presentAlert("kk4", "", JSON.stringify(this.currentCompany));
@@ -325,21 +412,36 @@ this.uploadImg();
       }
 
       this.selectedCompani = indexCom;
-
-      this.currentCompany = this.dataUser.companies[this.selectedCompani].ids[0];
+      var banP = false;
+      if (this.screenO.type.toUpperCase().includes('PORTRAIT')) {
+        banP = true;
+      }
+      for (let data of this.dataUser.companies[this.selectedCompani].ids) {
+        if (banP == true && data.orientation == 2) {
+          this.currentCompany = data;
+          break;
+        }
+        if (banP == false && data.orientation == 1) {
+          this.currentCompany = data;
+          break;
+        }
+      }
+      //  this.currentCompany = this.dataUser.companies[this.selectedCompani].ids[0];
       this.dataIcons = this.dataUser.companies[this.selectedCompani].anuncios;
       this.currentVigency = this.dataUser.companies[this.selectedCompani].vigencia;
+      this.selectedCVE = this.dataUser.companies[this.selectedCompani].clave;
 
-      this.photoJson = this.currentCompany.photo;
-      this.logoEmpJson = this.currentCompany.logoE;
-      this.logo2Json = this.currentCompany.logo2;
-      this.logo3Json = this.currentCompany.logo3;
-      this.qrJson = this.currentCompany.qr;
-      this.detailsJson = this.currentCompany.details;
-      this.details2Json = this.currentCompany.details2;
-      this.details3Json = this.currentCompany.details3;
-      this.details4Json = this.currentCompany.details4;
-      this.qr2 = this.currentCompany.qr2;
+      /*  this.photoJson = this.currentCompany.photo;
+        this.logoEmpJson = this.currentCompany.logoE;
+        this.logo2Json = this.currentCompany.logo2;
+        this.logo3Json = this.currentCompany.logo3;
+        this.qrJson = this.currentCompany.qr;
+        this.detailsJson = this.currentCompany.details;
+        this.details2Json = this.currentCompany.details2;
+        this.details3Json = this.currentCompany.details3;
+        this.details4Json = this.currentCompany.details4;
+        this.qr2 = this.currentCompany.qr2;*/
+      this.setSecciones();
       this.changeVar();
 
       //  this.presentAlert("kk7", "", JSON.stringify(this.logo2));
@@ -370,26 +472,41 @@ this.uploadImg();
 
       if (banValid == false) {
         this.presentAlert("Sesion expirada", "", "Este usuario no contiene ninguna credencial vigente, contacte a su administradror.");
+
         this.storeService.logout();
         this.auth.logout();
       }
 
       this.selectedCompani = indexCom;
-
-      this.currentCompany = this.dataUser.companies[this.selectedCompani].ids[0];
+      var banP = false;
+      if (this.screenO.type.toUpperCase().includes('PORTRAIT')) {
+        banP = true;
+      }
+      for (let data of this.dataUser.companies[this.selectedCompani].ids) {
+        if (banP == true && data.orientation == 2) {
+          this.currentCompany = data;
+          break;
+        }
+        if (banP == false && data.orientation == 1) {
+          this.currentCompany = data;
+          break;
+        }
+      }
+      //  this.currentCompany = this.dataUser.companies[this.selectedCompani].ids[0];
       this.dataIcons = this.dataUser.companies[this.selectedCompani].anuncios;
       this.currentVigency = this.dataUser.companies[this.selectedCompani].vigencia;
-
-      this.photoJson = this.currentCompany.photo;
-      this.logoEmpJson = this.currentCompany.logoE;
-      this.logo2Json = this.currentCompany.logo2;
-      this.logo3Json = this.currentCompany.logo3;
-      this.qrJson = this.currentCompany.qr;
-      this.detailsJson = this.currentCompany.details;
-      this.details2Json = this.currentCompany.details2;
-      this.details3Json = this.currentCompany.details3;
-      this.details4Json = this.currentCompany.details4;
-      this.qr2 = this.currentCompany.qr2;
+      this.selectedCVE = this.dataUser.companies[this.selectedCompani].clave;
+      /*  this.photoJson = this.currentCompany.photo;
+        this.logoEmpJson = this.currentCompany.logoE;
+        this.logo2Json = this.currentCompany.logo2;
+        this.logo3Json = this.currentCompany.logo3;
+        this.qrJson = this.currentCompany.qr;
+        this.detailsJson = this.currentCompany.details;
+        this.details2Json = this.currentCompany.details2;
+        this.details3Json = this.currentCompany.details3;
+        this.details4Json = this.currentCompany.details4;
+        this.qr2 = this.currentCompany.qr2;*/
+      this.setSecciones();
 
       this.changeVar();
       //  this.presentAlert("kk9", "", JSON.stringify(this.currentCompany));
@@ -420,35 +537,53 @@ this.uploadImg();
   changedCompany(event) {
     let count: number = 0;
     for (let data of this.dataUser.companies) {
-      if (data.companyName === event.target.value) {
+
+      if (data.clave.toString().trim() === event.target.value.toString().trim()) {
 
 
         var currDate = new Date();
         var dateExpire = new Date(data.vigencia)
         if (dateExpire <= currDate) {
+          this.selectedCVE = null;
           this.presentAlert("Credencial no valida", "", "Esta credencial no esta vigente, contacte a su administrador.");
           return;
         }
 
 
 
-
-        this.currentCompany = data.ids[0];
+        //  this.currentCompany = data.ids[0];
         this.selectedCompani = count;
-        this.currentCompany = this.dataUser.companies[this.selectedCompani].ids[0];
+        //this.presentAlert("","",this.selectedCVE);
+        var banP = false;
+        if (this.screenO.type.toUpperCase().includes('PORTRAIT')) {
+          banP = true;
+        }
+        for (let data2 of this.dataUser.companies[this.selectedCompani].ids) {
+          if (banP == true && data2.orientation == 2) {
+            this.currentCompany = data2;
+            break;
+          }
+          if (banP == false && data2.orientation == 1) {
+            this.currentCompany = data2;
+            break;
+          }
+        }
+
+        //  this.currentCompany = this.dataUser.companies[this.selectedCompani].ids[0];
         this.dataIcons = this.dataUser.companies[this.selectedCompani].anuncios;
         this.currentVigency = this.dataUser.companies[this.selectedCompani].vigencia;
 
-        this.photoJson = this.currentCompany.photo;
-        this.logoEmpJson = this.currentCompany.logoE;
-        this.logo2Json = this.currentCompany.logo2;
-        this.logo3Json = this.currentCompany.logo3;
-        this.qrJson = this.currentCompany.qr;
-        this.detailsJson = this.currentCompany.details;
-        this.details2Json = this.currentCompany.details2;
-        this.details3Json = this.currentCompany.details3;
-        this.details4Json = this.currentCompany.details4;
-        this.qr2 = this.currentCompany.qr2;
+        /*  this.photoJson = this.currentCompany.photo;
+          this.logoEmpJson = this.currentCompany.logoE;
+          this.logo2Json = this.currentCompany.logo2;
+          this.logo3Json = this.currentCompany.logo3;
+          this.qrJson = this.currentCompany.qr;
+          this.detailsJson = this.currentCompany.details;
+          this.details2Json = this.currentCompany.details2;
+          this.details3Json = this.currentCompany.details3;
+          this.details4Json = this.currentCompany.details4;
+          this.qr2 = this.currentCompany.qr2;*/
+        this.setSecciones();
 
         this.changeVar();
 
@@ -457,8 +592,10 @@ this.uploadImg();
       count++;
     }
 
-    this.presentAlert("", "", JSON.stringify(this.currentCompany));
+
   }
+
+  selectedCVE: any =0;
   openFirst() {
     this.menu.enable(true, 'first');
     this.menu.open('first');
@@ -487,7 +624,7 @@ this.uploadImg();
 
     this.profilePictureTaken = this.webview.convertFileSrc(this.file.dataDirectory + "profilept.jpg?var=" + Math.random());
 
-  //  this.uploadImg();
+    //  this.uploadImg();
   }
 
 
@@ -510,7 +647,7 @@ this.uploadImg();
 
 
 
-    selectImage() {
+  selectImage() {
 
 
     this.navctr.navigateRoot(['/crop-page']);
