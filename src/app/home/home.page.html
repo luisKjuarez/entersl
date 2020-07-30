@@ -8,73 +8,72 @@
 
 <ion-menu side="end" menuId="first" contentId="main" class="menu-side-item">
 
-  <ion-header>
-    <ion-toolbar class="header-menu-item">
-      <ion-title>Configuración</ion-title>
-    </ion-toolbar>
-  </ion-header>
+
   <ion-content>
 
-    <ion-list>
+    <div class="menu-side-div-item">
 
+      <ion-list>
 
-      <ion-item>Notificaciones<ion-toggle (ionChange)="notifyChange($event)"></ion-toggle>
-      </ion-item>
-
-      <ion-item>Credenciales</ion-item>
-
-      <ion-radio-group [(ngModel)]="selectedCVE"  (ionChange)="changedCompany($event)">
-        <ion-item *ngFor="let data of dataUser.companies">
-
-          <img src="{{data?.logo}}" alt="company item" style="border-radius:50%;margin-right:10px; height:auto;width:35px;">
-          &nbsp; {{data.clave}} &nbsp;&nbsp;
-          <ion-radio  value="{{data.clave}} " ></ion-radio>
+        <ion-item>Notificaciones<ion-toggle (ionChange)="notifyChange($event)"></ion-toggle>
         </ion-item>
 
-      </ion-radio-group>
+        <ion-item>Credenciales</ion-item>
+
+        <ion-radio-group [(ngModel)]="selectedCVE" (ionChange)="changedCompany($event)">
+          <ion-item *ngFor="let data of dataUser.companies">
+
+            <img src="{{data?.logo}}" alt="company item" style="border-radius:50%;margin-right:10px; height:auto;width:35px;">
+            &nbsp; {{data.clave}} &nbsp;&nbsp;
+            <ion-radio value="{{data.clave}} "></ion-radio>
+          </ion-item>
+
+        </ion-radio-group>
+      </ion-list>
 
 
+      <div>
+        <p style="text-align:center;color:rgba(0,0,0,0.5);">Vigencia</p>
+        <p style="text-align:center;">{{ currentVigency  | date:'dd-MMM-yyyy'}}</p>
+      </div>
+      <div style="content-align:center;margin:0 auto;width:100%; text-align:center;">
+        <ion-button style="margin:0 auto;" (click)="logout()" color="tertiary">Cerrar sesion</ion-button>
 
+      </div>
 
-
-
-
-
-
-
-    </ion-list>
-    <div>
-      <p style="text-align:center;color:rgba(0,0,0,0.5);">Vigencia</p>
-      <p style="text-align:center;">{{ currentVigency  | date:'dd-MMM-yyyy'}}</p>
     </div>
-    <div style="content-align:center;margin:0 auto;width:100%; text-align:center;">
-      <ion-button style="margin:0 auto;" (click)="logout()" color="tertiary">Cerrar sesion</ion-button>
-
-    </div>
-
 
 
   </ion-content>
 
 
-  <lib-ionic-pullup  class="pullup-item"  [(state)]="footerState" [toolbarTopMargin]="100" [minBottomVisible]="85">
-    <lib-ionic-pullup-tab class="tab" (click)="toggleFooter()"   >
+  <lib-ionic-pullup class="pullup-item" [(state)]="footerState" [toolbarTopMargin]="0" [minBottomVisible]="85">
+    <lib-ionic-pullup-tab class="tab" (click)="toggleFooter()">
 
-     </lib-ionic-pullup-tab>
-    <ion-toolbar class="toolbar-pullup-item"  (click)="toggleFooter()" #ionDragFooter   >
+    </lib-ionic-pullup-tab>
+    <ion-toolbar class="toolbar-pullup-item" (click)="toggleFooter()" #ionDragFooter>
       <ion-title></ion-title>
     </ion-toolbar>
-    <ion-content>
-      <ion-item class="icon-item">
-        <a href="https://www.entersl.com.mx"> <img src="/assets/images/enterlogo.png" alt="company logo" class="img-icon">
-        </a>
-      </ion-item>
-      <ion-item *ngFor="let data of dataIcons" class="icon-item">
-        <a href="{{data.url}}" style=" display:inline;"> <img src="{{data.logo}}" alt="company item" class="img-icon">
 
-        </a>
-      </ion-item>    </ion-content>
+
+    <ion-content>
+      <div class="ion-menu-div-land-item">
+
+
+        <ion-item class="icon-item">
+          <a href="https://www.entersl.com.mx"> <img src="/assets/images/enterlogo.png" alt="company logo" class="img-icon">
+          </a>
+        </ion-item>
+        <ion-item *ngFor="let data of dataIcons" class="icon-item">
+          <a href="{{data.url}}" style=" display:inline;"> <img src="{{data.logo}}" alt="company item" class="img-icon">
+
+          </a>
+        </ion-item>
+      </div>
+    </ion-content>
   </lib-ionic-pullup>
+
+
 </ion-menu>
 
 
@@ -222,14 +221,16 @@
 </ion-content>
 
 
-<ion-toolbar class="footer-icons">
-  <ion-item class="icon-item">
-    <a href="https://www.entersl.com.mx"> <img src="/assets/images/enterlogo.png" alt="company logo" class="img-icon">
-    </a>
-  </ion-item>
-  <ion-item *ngFor="let data of dataIcons" class="icon-item">
-    <a href="{{data.url}}" style=" display:inline;"> <img src="{{data.logo}}" alt="company item" class="img-icon">
+<ion-toolbar class="footer-icons scroll" scrollX="true">
+  <div scrollX="true" style="overflow:auto;width:100%;height:auto;">
+    <ion-item class="icon-item">
+      <a href="https://www.entersl.com.mx"> <img src="/assets/images/enterlogo.png" alt="company logo" class="img-icon">
+      </a>
+    </ion-item>
+    <ion-item *ngFor="let data of dataIcons" class="icon-item">
+      <a href="{{data.url}}" style=" display:inline;"> <img src="{{data.logo}}" alt="company item" class="img-icon">
 
-    </a>
-  </ion-item>
+      </a>
+    </ion-item>
+  </div>
 </ion-toolbar>
