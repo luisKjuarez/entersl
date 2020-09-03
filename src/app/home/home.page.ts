@@ -76,6 +76,7 @@ export class HomePage implements OnInit {
     this.footerState = IonPullUpFooterState.Collapsed;
 
   }
+
   footerExpanded() {
     console.log('Footer expanded!');
   }
@@ -93,6 +94,7 @@ export class HomePage implements OnInit {
     this.getUserData(this.auth.getUser().namep, this.auth.getToken());
 
     this.loadProfilePicture();
+
   }
   ionViewDidEnter() {
     this.userSesion = this.auth.getUser();
@@ -131,11 +133,15 @@ export class HomePage implements OnInit {
           this.initApis();
 
         }
+
+
       );
+
       this.initApis();
       this.loadProfilePicture();
       this.dataUser = this.storeService.getUserData();
       this.splashScreen.hide();
+
     });
     this.createdCode = "prueba";
 
@@ -168,6 +174,7 @@ export class HomePage implements OnInit {
     this.details3Json = this.currentCompany ?.details3;
     this.details4Json = this.currentCompany ?.details4;
     this.qr2 = this.currentCompany ?.qr2;
+
 
 
   }
@@ -342,10 +349,12 @@ export class HomePage implements OnInit {
 
 
           this.selectedCompani = indexCom;
-          var banP = false;
+          var banP = true;
           if (this.screenO.type.toUpperCase().includes('PORTRAIT')) {
             banP = true;
-          }
+          }else
+          banP=false;
+
           for (let data of this.dataUser.companies[this.selectedCompani].ids) {
             if (banP == true && data.orientation == 2) {
               this.currentCompany = data;
@@ -412,10 +421,11 @@ export class HomePage implements OnInit {
       }
 
       this.selectedCompani = indexCom;
-      var banP = false;
+      var banP = true;
+
       if (this.screenO.type.toUpperCase().includes('PORTRAIT')) {
         banP = true;
-      }
+      }else banP=false;
       for (let data of this.dataUser.companies[this.selectedCompani].ids) {
         if (banP == true && data.orientation == 2) {
           this.currentCompany = data;
@@ -478,10 +488,12 @@ export class HomePage implements OnInit {
       }
 
       this.selectedCompani = indexCom;
-      var banP = false;
+      var banP = true;
+
       if (this.screenO.type.toUpperCase().includes('PORTRAIT')) {
         banP = true;
-      }
+      }else
+      banP=false;
       for (let data of this.dataUser.companies[this.selectedCompani].ids) {
         if (banP == true && data.orientation == 2) {
           this.currentCompany = data;
@@ -518,6 +530,9 @@ export class HomePage implements OnInit {
             this.auth.logout();
           }*/
     });
+    this.setSecciones();
+    this.changeVar();
+
 
   }
 

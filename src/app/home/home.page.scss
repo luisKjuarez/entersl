@@ -455,9 +455,10 @@ box-shadow: 0px 4px 54px -22px rgba(0,0,0,0.36);
   }
 }
 
-.header-menu-item{
+.header-items{
   --ion-background-color: var(--headercolor-port);
 }
+
 .tab{
   background: var(--urls-color);
 }
@@ -483,9 +484,7 @@ ion-content {
   --ion-background-color: var(--bkcolor-port); //  --background: url(var(--bkimage-port)) 0 0/100% 100% no-repeat;
 }
 
-.header-items {
-  --ion-background-color: var(--headercolor-port);
-}
+
 
 #container strong {
   font-size: 20px;
