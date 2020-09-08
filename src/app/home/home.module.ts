@@ -8,7 +8,7 @@ import { NgxQRCodeModule } from 'ngx-qrcode2';
 import { IonicPullupModule } from 'ionic-pullup';
 import { HomePageRoutingModule } from './home-routing.module';
 
-
+//
 @NgModule({
   imports: [
     CommonModule,
